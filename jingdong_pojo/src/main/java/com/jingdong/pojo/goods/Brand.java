@@ -10,7 +10,7 @@ public class Brand implements Serializable {
     private Integer id;
     private String name;
     private String image;
-    private String latter;
+    private String letter;
     private Integer seq;
 
     public Integer getId() {
@@ -37,12 +37,12 @@ public class Brand implements Serializable {
         this.image = image;
     }
 
-    public String getLatter() {
-        return latter;
+    public String getLetter() {
+        return letter;
     }
 
-    public void setLatter(String latter) {
-        this.latter = latter;
+    public void setLetter(String letter) {
+        this.letter = letter;
     }
 
     public Integer getSeq() {
