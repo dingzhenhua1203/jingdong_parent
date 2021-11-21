@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>品牌管理</title>
+    <link rel="stylesheet" href="../elementui/css/elementui.css">
+</head>
+<body>
+<div id="app">
+    <div class="filter-wrap">
+        <el-form :inline="true" :model="SearchModel" class="demo-form-inline">
+            <el-form-item label="品牌名称" prop="brandName">
+                <el-input size='small' v-model="SearchModel.BrandName"></el-input>
+            </el-form-item>
+            <el-form-item label="有效性" prop="RowStatus">
+                <template>
+                    <el-radio v-model="SearchModel.RowStatus" label="1">有效</el-radio>
+                    <el-radio v-model="SearchModel.RowStatus" label="2">无效</el-radio>
+                </template>
+            </el-form-item>
+            <el-form-item>
+                <el-button-group>
+                    <el-button size="mini" type="primary" icon="el-icon-search" v-on:click="handleSelect">查询</el-button>
+                    <el-button size="mini" type="warning" icon="el-icon-edit"
+                               v-on:click="handleEdit(0)">新增
+                    </el-button>
+                </el-button-group>
+            </el-form-item>
+        </el-form>
+    </div>
+    <div class="data-Wrap">
+        <el-table
+                :data="tableData"
+                stripe
+                style="width: 100%">
+            <el-table-column
+                    prop="id"
+                    label="ID"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="品牌名称"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="letter"
+                    label="首字母"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="image"
+                    label="图片"
+                    width="300">
+                <template slot-scope="scope">
+                    <image :src="scope.row.image"></image>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="seq"
+                    label="序号"
+                    width="120">
+            </el-table-column>
+            <el-table-column label="操作" width="140">
+                <template slot-scope="scope">
+                    <el-button size="small" type="text" v-on:click="">编辑</el-button>
+                    <!--                <el-button size="small" type="text" v-on:click="">{{scope.row.SBDRowStatus==1?"无效":"有效"}}</el-button>
+                                    <el-button type="text" @@click="showlog(scope.row.SBDId)">日志</el-button>-->
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div class="page-wrap">
+        <el-pagination v-on:current-change="handleSelect"
+                       :current-page.sync="SearchModel.PageIndex"
+                       :page-size="SearchModel.PageSize"
+                       layout="total,prev, pager, next, jumper"
+                       :total="totalCount">
+        </el-pagination>
+        <div style="clear:both"></div>
+    </div>
+</div>
+</body>
+<script src="../elementui/js/vue.js"></script>
+<script src="../elementui/js/elementui.js"></script>
+<script src="../elementui/js/axios.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                SearchModel: {
+                    PageIndex: 1,
+                    PageSize: 10,
+                },
+                Config: {
+                    // SPCProjectOption: {},
+                },
+                tableData: [],
+                totalCount: 0,
+                totalPage: 0,
+                loading: false,
+            }
+        },
+        created() {
+            this.handleSelect();
+        },
+        methods: {
+            getalldata() {
+                axios.get(`/brand/list-all-brand.do`).then(resp => {
+                    console.log(JSON.stringify(resp));
+                    this.tableData = resp.data;
+                });
+            },
+            handleSelect() {
+                axios.post(`/brand/list-brand.do`,this.SearchModel).then(resp => {
+                    debugger
+                    console.log(JSON.stringify(resp));
+                    this.tableData = resp.data;
+                });
+            }
+        },
+        mounted() {
+        },
+        computed:{
+
+        }
+    })
+</script>
+</html>
