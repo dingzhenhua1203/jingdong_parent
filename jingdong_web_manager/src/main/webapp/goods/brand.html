@@ -113,7 +113,8 @@
                 });
             },
             handleSelect() {
-                axios.post(`/brand/list-brand.do`,this.SearchModel).then(resp => {
+                const that = this;
+                axios.post(`/brand/list-brand.do`,that.SearchModel).then(resp => {
                     debugger
                     console.log(JSON.stringify(resp));
                     this.tableData = resp.data;

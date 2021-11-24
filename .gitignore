@@ -1,12 +1,13 @@
 # Compiled class file
 *.class
 
+# kdiff3 ignore
+*.orig
+
 # Log file
 *.log
 
-# BlueJ files
-*.ctxt
-
+# maven ignore
 target/
 
 ### STS ###
@@ -18,10 +19,15 @@ target/
 .springBeans
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
+
+# eclipse ignore
+.settings/
+.project
+.classpath
 
 ### NetBeans ###
 nbproject/private/
@@ -36,9 +42,6 @@ out/
 .gradle/
 
 jars/
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
 
 # Package Files #
 *.jar
