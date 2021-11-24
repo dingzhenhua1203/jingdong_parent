@@ -7,6 +7,36 @@
 # BlueJ files
 *.ctxt
 
+target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+out/
+
+.gradle/
+
+jars/
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
