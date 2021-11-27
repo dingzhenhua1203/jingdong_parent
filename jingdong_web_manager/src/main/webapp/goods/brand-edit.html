@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>品牌管理</title>
+    <link rel="stylesheet" href="../elementui/css/elementui.css">
+    <script src="../elementui/js/vue.js"></script>
+    <script src="../elementui/js/elementui.js"></script>
+    <script src="../elementui/js/axios.js"></script>
+    <script src="../static/js/jquery-3.3.1.js"></script>
+    <script src="../static/js/utils.js"></script>
+    <script src="../static/layer/layer.js"></script>
+    <style>
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div id="editApp">
+    <el-form ref="ruleForm" :model="formModel" label-width="80px" :rules="rules">
+        <el-form-item label="品牌名称" prop="name">
+            <el-input size='small' v-model="formModel.name"></el-input>
+        </el-form-item>
+        <el-form-item label="品牌商标" prop="image">
+            <el-upload ref="imageUpload" class="avatar-uploader" style="display:inline"
+                       action=""
+                       :show-file-list="false"
+                       :auto-upload="true"
+                       :on-change="imgPreview">
+                <img v-if="formModel.image" :src="formModel.image" class="avatar" style="width:150px;height:150px">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+            <el-button size="mini" type="warning" icon="" v-on:click="handleUpload()"
+                       style="display:inline;margin-left:20px">点击上传
+            </el-button>
+        </el-form-item>
+        <el-form-item label="首字母" prop="letter">
+            <el-input size='small' v-model="formModel.letter"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" size="small" :loading="saveLoading" v-on:click="OnSubmit('ruleForm')">
+                {{saveText}}
+            </el-button>
+            <el-button size="small" v-on:click="ResetForm('ruleForm')">重置</el-button>
+        </el-form-item>
+    </el-form>
+</div>
+
+<script>
+    var vm = new Vue({
+        el: "#editApp",
+        data: function () {
+            return {
+                saveLoading: false,
+                formModel: {
+                    image: "",
+                    letter: "",
+                    name: ""
+                },
+                IsUpload: false,
+                files: [],
+                rules: {
+                    name: [
+                        {required: true, message: '请填写品牌名称'},
+                    ],
+                    image: [
+                        {required: true, message: '请上传品牌商标'},
+                    ],
+                    letter: [
+                        {required: true, message: '请填写首字母'},
+                    ],
+                },
+            };
+
+        },
+        computed: {
+            saveText: function () {
+
+                return this.saveLoading ? '保存中...' : '保存';
+            }
+        },
+        methods: {
+            handleUpload() {
+                const that = this;
+                const url = `/common-upload/upload-img`;
+                if (that.files.length == 0) {
+                    that.alert.Error("请先选择图片");
+                    return false;
+                }
+                let formData = new FormData();
+                formData.append('file', that.files[0]);
+                axios.post(url, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }).then(res => {
+                    console.log(res);
+                    if (data.ResultCode == 1) {
+                        that.IsUpload = true;
+                        that.formModel.image = data.Body;
+                        that.saveLoading = false;
+                        that.alert.Success("上传成功");
+                        //that.$utils.closeDialog();
+                    }
+                }).catch(err => {
+                    console.log(err);
+                });
+            },
+            imgPreview(file, fileList) {
+                let fileName = file.name;
+                let regex = /(.jpg|.jpeg|.png|.bmp|.gif)$/;
+                if (!regex.test(fileName.toLowerCase())) {
+                    this.$message.error('支持图片格式：.jpg|.jpeg|.png|.bmp|.gif');
+                    fileList.splice(0, fileList.length);
+                    return false;
+                }
+
+                const isLt30K = file.size / 1024 <= 500;
+                if (!isLt30K) {
+                    this.$message.error('图片大小不能超过500KB!');
+                    fileList.splice(0, fileList.length);
+                    return false;
+                }
+                this.IsUpload = false;
+                this.formModel.image = URL.createObjectURL(file.raw);
+                this.files.push(file.raw);
+            },
+            GetGoodsBrandDetail(id) {
+                const that = this;
+                const url = `/brand/preview-detail.do?id=${id}`;
+                axios.get(url).then(resp => {
+                    console.log(JSON.stringify(resp));
+                    that.formModel = resp.data;
+                    that.IsUpload = true;
+                });
+            },
+            PostToServer() {
+                const that = this;
+                const url = `/GoodsBrand/EditGoodsBrand`;
+                ajaxCall.Post(that, url, that.form
+                    , function (that, data) {
+                        that.alert.Success("保存成功");
+                        that.saveLoading = false;
+                        that.$utils.closeDialog();
+                    }, function (that) {
+                        that.saveLoading = false;
+                    });
+            },
+            OnSubmit(formName) {
+                const that = this;
+                if (!that.IsUpload) {
+                    that.alert.Error("请上传图片");
+                    return;
+                }
+                if (this.saveLoading) {
+                    that.alert.Error("正在保存中,请耐心等待。。。");
+                    return;
+                }
+                that.saveLoading = true;
+                console.log('submit!');
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        that.PostToServer();
+                    } else {
+                        that.saveLoading = false;
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+
+            },
+            ResetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+        },
+        mounted: function () {
+            const id = this.$utils.getUrlKey("id");
+            if (id > 0) {
+                this.GetGoodsBrandDetail(id);
+            }
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

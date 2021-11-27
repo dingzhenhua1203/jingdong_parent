@@ -17,22 +17,27 @@ public class BrandController {
     private BrandService brandService;
 
     @GetMapping("/list-all-brand")
-    public  List<Brand> listAllBrands(){
+    public List<Brand> listAllBrands() {
         return brandService.listAllBrands();
     }
 
     @PostMapping("/list-brand")
-    public PageResult<Brand> listBrands(@RequestBody ListBrandsRequest request){
+    public PageResult<Brand> listBrands(@RequestBody ListBrandsRequest request) {
         return brandService.listBrands(request);
     }
 
+    @GetMapping("/preview-detail")
+    public Brand previewDetail(@RequestParam(name = "id", required = true) Integer id) {
+        return brandService.previewDetail(id);
+    }
+
     @PostMapping("/upsert-brand")
-    public boolean UpsertBrand(@RequestBody Brand brand){
+    public boolean UpsertBrand(@RequestBody Brand brand) {
         return brandService.upsertBrand(brand);
     }
 
     @PostMapping("/del-brand/")
-    public boolean DelBrand(Integer id){
+    public boolean DelBrand(Integer id) {
         return brandService.delBrand(id);
     }
 }

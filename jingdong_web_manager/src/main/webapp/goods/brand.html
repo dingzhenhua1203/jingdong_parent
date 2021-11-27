@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <title>品牌管理</title>
     <link rel="stylesheet" href="../elementui/css/elementui.css">
+    <script src="../elementui/js/vue.js"></script>
+    <script src="../elementui/js/elementui.js"></script>
+    <script src="../elementui/js/axios.js"></script>
+    <script src="../static/js/jquery-3.3.1.js"></script>
+    <script src="../static/js/utils.js"></script>
+    <script src="../static/layer/layer.js"></script>
 </head>
 <body>
 <div id="app">
     <div class="filter-wrap">
         <el-form :inline="true" :model="SearchModel" class="demo-form-inline">
-            <el-form-item label="品牌名称" prop="brandName">
+            <el-form-item label="品牌名称" prop="BrandName">
                 <el-input size='small' v-model="SearchModel.BrandName"></el-input>
             </el-form-item>
             <el-form-item label="有效性" prop="RowStatus">
@@ -63,7 +69,7 @@
             </el-table-column>
             <el-table-column label="操作" width="140">
                 <template slot-scope="scope">
-                    <el-button size="small" type="text" v-on:click="">编辑</el-button>
+                    <el-button size="small" type="text" v-on:click="handleEdit(scope.row.id)">编辑</el-button>
                     <!--                <el-button size="small" type="text" v-on:click="">{{scope.row.SBDRowStatus==1?"无效":"有效"}}</el-button>
                                     <el-button type="text" @@click="showlog(scope.row.SBDId)">日志</el-button>-->
                 </template>
@@ -81,9 +87,6 @@
     </div>
 </div>
 </body>
-<script src="../elementui/js/vue.js"></script>
-<script src="../elementui/js/elementui.js"></script>
-<script src="../elementui/js/axios.js"></script>
 <script>
     new Vue({
         el: "#app",
@@ -115,11 +118,17 @@
             handleSelect() {
                 const that = this;
                 axios.post(`/brand/list-brand.do`,that.SearchModel).then(resp => {
-                    debugger
-                    console.log(JSON.stringify(resp));
-                    this.tableData = resp.data;
+                    // console.log(JSON.stringify(resp));
+                    this.tableData = resp.data.results;
+                    this.totalCount = resp.data.totals;
                 });
-            }
+            },
+            handleEdit(id) {
+                const that = this;
+                const title = id > 0 ? '编辑' : "新增";
+                const url = `/goods/brand-edit.html?id=${id}`;
+                OpenEditPage(url, title, "800", "600", that.handleSelect);
+            },
         },
         mounted() {
         },
