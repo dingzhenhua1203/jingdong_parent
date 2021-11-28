@@ -11,6 +11,7 @@ public interface BrandService {
 
     PageResult<Brand> listBrands(ListBrandsRequest request);
 
+    Brand previewDetail(Integer id);
     boolean upsertBrand(Brand brand);
     boolean delBrand(Integer id);
 }
