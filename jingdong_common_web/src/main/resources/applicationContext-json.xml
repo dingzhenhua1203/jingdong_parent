@@ -36,7 +36,7 @@
 	<!--<bean id="upYunOss" class="com.jingdong.common.oss.UPYUNService">
 		<constructor-arg index="0" value="oss.dcmickey.cn"></constructor-arg>
 		<constructor-arg index="1" value="ftpurser"></constructor-arg>
-		<constructor-arg index="2" value="hKxZIjEQNYXpfJf5QwXg2sWdJMbp6nYg"></constructor-arg>
+		<constructor-arg index="2" value="LhulwGUf7OChdyJXwHBR6n0aq7vSye8x"></constructor-arg>
 	</bean>-->
 
 </beans>
