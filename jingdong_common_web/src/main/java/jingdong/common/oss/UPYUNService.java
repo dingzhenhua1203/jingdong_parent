@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -31,7 +32,7 @@ public class UPYUNService {
     /*url后缀*/
     private String secretFlex;
 
-    private final String UploadPath = "/jingdongparent/files";
+    private final String UploadPath = "/jingdongparent/files/";
 
     // 创建实例
     private RestManager manager;
@@ -75,12 +76,12 @@ public class UPYUNService {
 
     }
 
-    public String uploadImg(String path, InputStream stream) throws IOException {
+    public String uploadImg(String fileName, InputStream stream) throws IOException {
 
         Map<String, String> params = new HashMap<String, String>();
         // 设置待上传文件的 Content-MD5 值
         // 如果又拍云服务端收到的文件MD5值与用户设置的不一致，将回报 406 NotAcceptable 错误
-        byte[] bytes=StreamHelper.InputStreamToByte(stream);
+        byte[] bytes = StreamHelper.InputStreamToByte(stream);
         params.put(RestManager.PARAMS.CONTENT_MD5.getValue(), UpYunUtils.md5(bytes));
 
         // 设置待上传文件的"访问密钥"
@@ -97,10 +98,10 @@ public class UPYUNService {
          * response.isSuccessful() 结果为 true 上传文件成功
          */
         try {
-            Response result = manager.writeFile(this.UploadPath, bytes, params);
-            return result.isSuccessful() ? getFilePath(this.UploadPath) : "";
+            Response result = manager.writeFile(this.UploadPath + UUID.randomUUID() + fileName, bytes, params);
+            return result.isSuccessful() ? getFilePath(UUID.randomUUID() + fileName) : "";
         } catch (Exception ex) {
-            return "";
+            return ex.toString();
         }
 
     }
@@ -113,7 +114,7 @@ public class UPYUNService {
      * @return 全URL
      */
     public String getFilePath(String fileName) {
-        return "https://" + domain + fileName;
+        return "https://" + domain + fileName + "!" + secretFlex;
     }
 
     /**

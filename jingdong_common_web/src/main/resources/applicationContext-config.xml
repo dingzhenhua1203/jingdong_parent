@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600" />
+        <property name="maxInMemorySize" value="4096" />
+        <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>
+    <!--upyun oss  -->
+    <bean id="upyunService" class="jingdong.common.oss.UPYUNService">
+        <constructor-arg name="bucketName"  value="dcstudy-oss"></constructor-arg>
+        <constructor-arg name="upYunUser" value="ftpurser"></constructor-arg>
+        <constructor-arg name="upYunSecretKey" value="LhulwGUf7OChdyJXwHBR6n0aq7vSye8x"></constructor-arg>
+        <property name="domain" value="oss.dcmickey.cn"></property>
+        <property name="secretFlex" value="dc"></property>
+    </bean>
+</beans>

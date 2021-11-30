@@ -97,7 +97,7 @@ public class CommonUploadController {
     @RequestMapping("upload-oss-img")
     public String fileUpload3(@RequestParam("file") CommonsMultipartFile file) throws IOException {
         InputStream inputStream = file.getInputStream();
-        upyunService.uploadImg("", inputStream);
-        return "/success";
+        String resp = upyunService.uploadImg(file.getOriginalFilename(), inputStream);
+        return resp;
     }
 }
