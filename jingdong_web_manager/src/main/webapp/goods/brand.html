@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>品牌管理</title>
@@ -11,6 +11,19 @@
     <script src="../static/js/utils.js"></script>
     <script src="../static/layer/layer.js"></script>
     <script src="../static/js/alert-message.js"></script>
+    <style>
+        .imgcss {
+            position: absolute;
+            display: none;
+        }
+        .imgcss img {
+            width: 200px;
+            height: 200px;
+        }
+        .el-table .warning-row {
+            background: oldlace;
+        }
+    </style>
 </head>
 <body>
 <div id="app">
@@ -60,7 +73,9 @@
                     label="图片"
                     width="300">
                 <template slot-scope="scope">
-                    <image :src="scope.row.image"></image>
+                    <div style="position:relative" v-if="scope.row.image!=''">
+                        <img :src="scope.row.image" height="40" width="40" v-on:mouseover="imgover(scope.row.image, $event)" v-on:mouseout="imgout">
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column
@@ -85,6 +100,7 @@
                        :total="totalCount">
         </el-pagination>
         <div style="clear:both"></div>
+        <div id="imgdiv1" class="imgcss" v-bind:style="{'top':top+'px','left':left+'px'}"><img :src="imgUrl"></div>
     </div>
 </div>
 </body>
@@ -104,6 +120,9 @@
                 totalCount: 0,
                 totalPage: 0,
                 loading: false,
+                imgUrl: "",
+                top: "",
+                left: "",
             }
         },
         created() {
@@ -115,6 +134,18 @@
                     console.log(JSON.stringify(resp));
                     this.tableData = resp.data;
                 });
+            },
+            imgover(url, e) {
+                console.log(e)
+                var event = e
+                this.imgUrl = url;
+                this.top = event.target.y;
+                this.left = event.target.x + 2;
+                $("#imgdiv1").css("display", "block");
+            },
+            imgout(url) {
+                this.imgUrl = "";
+                $("#imgdiv1").css("display", "none");
             },
             handleSelect() {
                 const that = this;
