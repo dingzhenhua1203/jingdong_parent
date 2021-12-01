@@ -1,5 +1,7 @@
 package com.jingdong.controller;
 
+import com.jingdong.model.base.ResultMsg;
+import com.upyun.UpException;
 import jingdong.common.oss.UPYUNService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -95,9 +97,9 @@ public class CommonUploadController {
      * 采用file.Transto 来保存上传的文件
      */
     @RequestMapping("upload-oss-img")
-    public String fileUpload3(@RequestParam("file") CommonsMultipartFile file) throws IOException {
+    public ResultMsg<String> uploadOssImg(@RequestParam("file") CommonsMultipartFile file) throws IOException, UpException {
         InputStream inputStream = file.getInputStream();
         String resp = upyunService.uploadImg(file.getOriginalFilename(), inputStream);
-        return resp;
+        return ResultMsg.SuccessResult(resp);
     }
 }

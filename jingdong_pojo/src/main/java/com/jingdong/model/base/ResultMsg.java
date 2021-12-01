@@ -20,4 +20,12 @@ public class ResultMsg<T> implements Serializable {
         this.code = code;
         this.message = message;
     }
+
+    public static <T> ResultMsg<T> SuccessResult(T body) {
+        return new ResultMsg<T>(1, body, "");
+    }
+
+    public static <T> ResultMsg<T> FailResult(String error) {
+        return new ResultMsg<T>(0, null, error);
+    }
 }

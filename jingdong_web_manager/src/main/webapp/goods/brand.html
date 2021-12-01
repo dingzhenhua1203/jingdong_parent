@@ -10,6 +10,7 @@
     <script src="../static/js/jquery-3.3.1.js"></script>
     <script src="../static/js/utils.js"></script>
     <script src="../static/layer/layer.js"></script>
+    <script src="../static/js/alert-message.js"></script>
 </head>
 <body>
 <div id="app">
@@ -70,8 +71,8 @@
             <el-table-column label="操作" width="140">
                 <template slot-scope="scope">
                     <el-button size="small" type="text" v-on:click="handleEdit(scope.row.id)">编辑</el-button>
-                    <!--                <el-button size="small" type="text" v-on:click="">{{scope.row.SBDRowStatus==1?"无效":"有效"}}</el-button>
-                                    <el-button type="text" @@click="showlog(scope.row.SBDId)">日志</el-button>-->
+                    <el-button size="small" type="text" v-on:click="handleDelete(scope.row.id)">删除</el-button>
+                    <!--          <el-button type="text" @@click="showlog(scope.row.SBDId)">日志</el-button>-->
                 </template>
             </el-table-column>
         </el-table>
@@ -117,7 +118,7 @@
             },
             handleSelect() {
                 const that = this;
-                axios.post(`/brand/list-brand.do`,that.SearchModel).then(resp => {
+                axios.post(`/brand/list-brand.do`, that.SearchModel).then(resp => {
                     // console.log(JSON.stringify(resp));
                     this.tableData = resp.data.results;
                     this.totalCount = resp.data.totals;
@@ -129,12 +130,21 @@
                 const url = `/goods/brand-edit.html?id=${id}`;
                 OpenEditPage(url, title, "800", "600", that.handleSelect);
             },
+            handleDelete(id) {
+                const that = this;
+                const url = `/brand/del-brand.do?id=${id}`;
+                axios.post(url).then(res => {
+                    console.log(res);
+                    that.alert.Success("删除成功");
+                    that.handleSelect();
+                }).catch(err => {
+                    console.log(err);
+                });
+            },
         },
         mounted() {
         },
-        computed:{
-
-        }
+        computed: {}
     })
 </script>
 </html>

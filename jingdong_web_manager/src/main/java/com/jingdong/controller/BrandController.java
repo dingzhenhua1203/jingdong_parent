@@ -36,8 +36,8 @@ public class BrandController {
         return brandService.upsertBrand(brand);
     }
 
-    @PostMapping("/del-brand/")
-    public boolean DelBrand(Integer id) {
+    @PostMapping("/del-brand")
+    public boolean DelBrand(@RequestParam(name = "id", required = true) Integer id) {
         return brandService.delBrand(id);
     }
 }

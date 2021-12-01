@@ -10,6 +10,7 @@
     <script src="../static/js/jquery-3.3.1.js"></script>
     <script src="../static/js/utils.js"></script>
     <script src="../static/layer/layer.js"></script>
+    <script src="../static/js/alert-message.js"></script>
     <style>
         .avatar-uploader .el-upload {
             border: 1px dashed #d9d9d9;
@@ -99,7 +100,6 @@
         },
         computed: {
             saveText: function () {
-
                 return this.saveLoading ? '保存中...' : '保存';
             }
         },
@@ -119,9 +119,9 @@
                     },
                 }).then(res => {
                     console.log(res);
-                    if (data.ResultCode == 1) {
+                    if (res.data.code === 1) {
                         that.IsUpload = true;
-                        that.formModel.image = data.Body;
+                        that.formModel.image = res.data.data;
                         that.saveLoading = false;
                         that.alert.Success("上传成功");
                         //that.$utils.closeDialog();
@@ -160,15 +160,22 @@
             },
             PostToServer() {
                 const that = this;
-                const url = `/GoodsBrand/EditGoodsBrand`;
-                ajaxCall.Post(that, url, that.form
-                    , function (that, data) {
+                const url = `/brand/upsert-brand.do`;
+                axios.post(url, that.formModel, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }).then(res => {
+                    console.log(res);
+                    that.saveLoading = false;
+                    if (res.data) {
                         that.alert.Success("保存成功");
-                        that.saveLoading = false;
                         that.$utils.closeDialog();
-                    }, function (that) {
-                        that.saveLoading = false;
-                    });
+                    }
+                }).catch(err => {
+                    console.log(err);
+                    that.saveLoading = false;
+                });
             },
             OnSubmit(formName) {
                 const that = this;

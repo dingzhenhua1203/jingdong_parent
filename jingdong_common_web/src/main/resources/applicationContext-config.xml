@@ -15,6 +15,6 @@
         <constructor-arg name="upYunUser" value="ftpurser"></constructor-arg>
         <constructor-arg name="upYunSecretKey" value="LhulwGUf7OChdyJXwHBR6n0aq7vSye8x"></constructor-arg>
         <property name="domain" value="oss.dcmickey.cn"></property>
-        <property name="secretFlex" value="dc"></property>
+        <property name="secretFlex" value=""></property>
     </bean>
 </beans>

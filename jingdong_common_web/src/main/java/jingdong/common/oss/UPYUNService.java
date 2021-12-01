@@ -3,6 +3,7 @@ package jingdong.common.oss;
 import com.UpYun;
 import com.jingdong.util.StreamHelper;
 import com.upyun.RestManager;
+import com.upyun.UpException;
 import com.upyun.UpYunUtils;
 
 import lombok.Getter;
@@ -76,8 +77,7 @@ public class UPYUNService {
 
     }
 
-    public String uploadImg(String fileName, InputStream stream) throws IOException {
-
+    public String uploadImg(String fileName, InputStream stream) throws IOException, UpException {
         Map<String, String> params = new HashMap<String, String>();
         // 设置待上传文件的 Content-MD5 值
         // 如果又拍云服务端收到的文件MD5值与用户设置的不一致，将回报 406 NotAcceptable 错误
@@ -90,7 +90,9 @@ public class UPYUNService {
         // 举例：
         // 如果缩略图间隔标志符为"!"，密钥为"bac"，上传文件路径为"/folder/test.jpg"，
         // 那么该图片的对外访问地址为：http://空间域名 /folder/test.jpg!bac
-        params.put(RestManager.PARAMS.CONTENT_SECRET.getValue(), secretFlex);
+        if (!StringUtils.isBlank(secretFlex)) {
+            params.put(RestManager.PARAMS.CONTENT_SECRET.getValue(), secretFlex);
+        }
         /**
          * filePath 保存到又拍云存储的文件路径，以/开始
          * 第二个参数 接受 InputStream 、 File 和 byte[] 三种类型的数据
@@ -98,10 +100,11 @@ public class UPYUNService {
          * response.isSuccessful() 结果为 true 上传文件成功
          */
         try {
-            Response result = manager.writeFile(this.UploadPath + UUID.randomUUID() + fileName, bytes, params);
-            return result.isSuccessful() ? getFilePath(UUID.randomUUID() + fileName) : "";
+            String newFileName = UUID.randomUUID().toString().replaceAll("-", "") + fileName;
+            Response result = manager.writeFile(this.UploadPath + newFileName, bytes, params);
+            return result.isSuccessful() ? getFilePath(newFileName) : "";
         } catch (Exception ex) {
-            return ex.toString();
+            throw ex;
         }
 
     }
@@ -114,7 +117,12 @@ public class UPYUNService {
      * @return 全URL
      */
     public String getFilePath(String fileName) {
-        return "https://" + domain + fileName + "!" + secretFlex;
+        // https://oss.dcmickey.cn/jingdongparent/files/fd959ee30ce94397a1b18d4aa62dea4cicon.jpg!dc
+        String fileUrl = "https://" + domain + UploadPath + fileName;
+        if (StringUtils.isNotBlank(secretFlex)) {
+            fileUrl += "!" + secretFlex;
+        }
+        return fileUrl;
     }
 
     /**
