@@ -28,4 +28,8 @@ public class ResultMsg<T> implements Serializable {
     public static <T> ResultMsg<T> FailResult(String error) {
         return new ResultMsg<T>(0, null, error);
     }
+
+    public static <T> ResultMsg<T> FailResult1(String error) {
+        return new ResultMsg<T>(0, error);
+    }
 }
