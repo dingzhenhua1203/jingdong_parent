@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <title>管理</title>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="/css/elementui.css">
+    <link rel="stylesheet" href="../elementui/css/elementui.css">
+    <script src="../elementui/js/vue.js"></script>
+    <script src="../elementui/js/elementui.js"></script>
+    <script src="../elementui/js/axios.js"></script>
+    <script src="../static/js/jquery-3.3.1.js"></script>
+    <script src="../static/js/utils.js"></script>
+    <script src="../static/layer/layer.js"></script>
+    <script src="../static/js/alert-message.js"></script>
     <!-- 上传图片框样式，不使用上传组件可以删除此样式 -->
     <style>
         .avatar-uploader .el-upload {
@@ -14,9 +21,11 @@
             position: relative;
             overflow: hidden;
         }
+
         .avatar-uploader .el-upload:hover {
             border-color: #409EFF;
         }
+
         .avatar-uploader-icon {
             font-size: 28px;
             color: #8c939d;
@@ -25,6 +34,7 @@
             line-height: 150px;
             text-align: center;
         }
+
         .avatar {
             width: 150px;
             height: 70px;
@@ -36,37 +46,44 @@
 <body>
 <div id="app">
     <!--查询表单-->
-    <el-form :inline="true" >
-          <el-form-item label="分类ID">
-<el-input v-model="searchMap.cateId" placeholder="分类ID"></el-input></el-form-item>
-          <el-form-item label="消费金额">
-<el-input v-model="searchMap.buyMoney" placeholder="消费金额"></el-input></el-form-item>
-          <el-form-item label="优惠金额">
-<el-input v-model="searchMap.preMoney" placeholder="优惠金额"></el-input></el-form-item>
-          <el-form-item label="活动开始日期">
-<el-input v-model="searchMap.startTime" placeholder="活动开始日期"></el-input></el-form-item>
-          <el-form-item label="活动截至日期">
-<el-input v-model="searchMap.endTime" placeholder="活动截至日期"></el-input></el-form-item>
-          <el-form-item label="类型">
-<el-input v-model="searchMap.type" placeholder="类型"></el-input></el-form-item>
-          <el-form-item label="状态">
-<el-input v-model="searchMap.state" placeholder="状态"></el-input></el-form-item>
+    <el-form :inline="true">
+        <el-form-item label="分类ID">
+            <el-input v-model="searchMap.cateId" placeholder="分类ID"></el-input>
+        </el-form-item>
+        <el-form-item label="消费金额">
+            <el-input v-model="searchMap.buyMoney" placeholder="消费金额"></el-input>
+        </el-form-item>
+        <el-form-item label="优惠金额">
+            <el-input v-model="searchMap.preMoney" placeholder="优惠金额"></el-input>
+        </el-form-item>
+        <el-form-item label="活动开始日期">
+            <el-input v-model="searchMap.startTime" placeholder="活动开始日期"></el-input>
+        </el-form-item>
+        <el-form-item label="活动截至日期">
+            <el-input v-model="searchMap.endTime" placeholder="活动截至日期"></el-input>
+        </el-form-item>
+        <el-form-item label="类型">
+            <el-input v-model="searchMap.type" placeholder="类型"></el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+            <el-input v-model="searchMap.state" placeholder="状态"></el-input>
+        </el-form-item>
 
         <el-button type="primary" @click="fetchData()">查询</el-button>
         <el-button type="primary" @click="formVisible=true;pojo={}">新增</el-button>
     </el-form>
     <el-table :data="tableData" border style="width: 100%">
-          <el-table-column prop="id" label="ID" width="80"></el-table-column>
-          <el-table-column prop="cateId" label="分类ID" width="80"></el-table-column>
-          <el-table-column prop="buyMoney" label="消费金额" width="80"></el-table-column>
-          <el-table-column prop="preMoney" label="优惠金额" width="80"></el-table-column>
-          <el-table-column prop="startTime" label="活动开始日期" width="80"></el-table-column>
-          <el-table-column prop="endTime" label="活动截至日期" width="80"></el-table-column>
-          <el-table-column prop="type" label="类型" width="80"></el-table-column>
-          <el-table-column prop="state" label="状态" width="80"></el-table-column>
+        <el-table-column prop="id" label="ID" width="80"></el-table-column>
+        <el-table-column prop="cateId" label="分类ID" width="80"></el-table-column>
+        <el-table-column prop="buyMoney" label="消费金额" width="80"></el-table-column>
+        <el-table-column prop="preMoney" label="优惠金额" width="80"></el-table-column>
+        <el-table-column prop="startTime" label="活动开始日期" width="80"></el-table-column>
+        <el-table-column prop="endTime" label="活动截至日期" width="80"></el-table-column>
+        <el-table-column prop="type" label="类型" width="80"></el-table-column>
+        <el-table-column prop="state" label="状态" width="80"></el-table-column>
 
         <el-table-column
-                label="操作"  >
+                label="操作">
             <template slot-scope="scope">
                 <el-button @click="edit(scope.row.id)" type="text" size="small">修改</el-button>
                 <el-button @click="dele(scope.row.id)" type="text" size="small">删除</el-button>
@@ -84,18 +101,32 @@
     </el-pagination>
 
     <!--弹出窗口-->
-    <el-dialog  title="编辑" :visible.sync="formVisible" >
+    <el-dialog title="编辑" :visible.sync="formVisible">
         <el-form label-width="80px">
-        <el-form-item label="分类ID"><el-input v-model="pojo.cateId"></el-input></el-form-item>
-        <el-form-item label="消费金额"><el-input v-model="pojo.buyMoney"></el-input></el-form-item>
-        <el-form-item label="优惠金额"><el-input v-model="pojo.preMoney"></el-input></el-form-item>
-        <el-form-item label="活动开始日期"><el-input v-model="pojo.startTime"></el-input></el-form-item>
-        <el-form-item label="活动截至日期"><el-input v-model="pojo.endTime"></el-input></el-form-item>
-        <el-form-item label="类型"><el-input v-model="pojo.type"></el-input></el-form-item>
-        <el-form-item label="状态"><el-input v-model="pojo.state"></el-input></el-form-item>
+            <el-form-item label="分类ID">
+                <el-input v-model="pojo.cateId"></el-input>
+            </el-form-item>
+            <el-form-item label="消费金额">
+                <el-input v-model="pojo.buyMoney"></el-input>
+            </el-form-item>
+            <el-form-item label="优惠金额">
+                <el-input v-model="pojo.preMoney"></el-input>
+            </el-form-item>
+            <el-form-item label="活动开始日期">
+                <el-input v-model="pojo.startTime"></el-input>
+            </el-form-item>
+            <el-form-item label="活动截至日期">
+                <el-input v-model="pojo.endTime"></el-input>
+            </el-form-item>
+            <el-form-item label="类型">
+                <el-input v-model="pojo.type"></el-input>
+            </el-form-item>
+            <el-form-item label="状态">
+                <el-input v-model="pojo.state"></el-input>
+            </el-form-item>
 
-			<!-- 图片上传代码 如页面有图片上传功能放开注释 **** 
-			<el-form-item label="图片">
+            <!-- 图片上传代码 如页面有图片上传功能放开注释 ****
+            <el-form-item label="图片">
                 <el-upload
                         class="avatar-uploader"
                         action="/upload/native.do"
@@ -107,23 +138,20 @@
                 </el-upload>
             </el-form-item>
             -->
-			
-			<el-form-item>
+
+            <el-form-item>
                 <el-button type="primary" @click="save()">保存</el-button>
-                <el-button @click="formVisible = false" >关闭</el-button>
+                <el-button @click="formVisible = false">关闭</el-button>
             </el-form-item>
         </el-form>
     </el-dialog>
 
 </div>
 </body>
-<script src="/js/vue.js"></script>
-<script src="/js/axios.js"></script>
-<script src="/js/elementui.js"></script>
 <script>
-     new Vue({
+    new Vue({
         el: '#app',
-        data(){
+        data() {
             return {
                 tableData: [],
                 currentPage: 1,
@@ -135,25 +163,25 @@
                 imageUrl: ''
             }
         },
-        created(){
+        created() {
             this.fetchData();
         },
-        methods:{
-            fetchData (){
-                axios.post(`/pref/findPage.do?page=${this.currentPage}&size=${this.size}`,this.searchMap).then(response => {
-                    this.tableData = response.data.rows;
+        methods: {
+            fetchData() {
+                axios.post(`/pref/findPage.do?page=${this.currentPage}&size=${this.size}`, this.searchMap).then(response => {
+                    this.tableData = response.data.results;
                     this.total = response.data.total;
                 });
             },
-            save (){
+            save() {
                 // this.pojo.image= this.imageUrl; //如页面有图片上传功能放开注释
 
-                axios.post(`/pref/${this.pojo.id==null?'add':'update'}.do`,this.pojo).then(response => {
-                    this.fetchData (); //刷新列表
-                    this.formVisible = false ;//关闭窗口
+                axios.post(`/pref/${this.pojo.id == null ? 'add' : 'update'}.do`, this.pojo).then(response => {
+                    this.fetchData(); //刷新列表
+                    this.formVisible = false;//关闭窗口
                 });
             },
-            edit (id){
+            edit(id) {
                 this.formVisible = true // 打开窗口
                 // 调用查询
                 axios.get(`/pref/findById.do?id=${id}`).then(response => {
@@ -162,18 +190,18 @@
 
                 })
             },
-            dele (id){
+            dele(id) {
                 this.$confirm('确定要删除此记录吗?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then( () => {
+                }).then(() => {
                     axios.get(`/pref/delete.do?id=${id}`).then(response => {
-                        this.fetchData (); //刷新列表
+                        this.fetchData(); //刷新列表
                     })
                 })
             },
-			/* ****图片上传相关代码  如页面有图片上传功能放开注释 **** 
+            /* ****图片上传相关代码  如页面有图片上传功能放开注释 ****
             handleAvatarSuccess(res, file) {
                 this.imageUrl = file.response;
             },
@@ -189,6 +217,8 @@
                 }
                 return isJPG && isLt2M;
             }*/
+        },
+        mounted: function () {
         }
     })
 </script>

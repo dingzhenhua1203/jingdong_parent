@@ -1,0 +1,11 @@
+.imgcss {
+    position: absolute;
+    display: none;
+}
+.imgcss img {
+    width: 200px;
+    height: 200px;
+}
+.el-table .warning-row {
+    background: oldlace;
+}

@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <title>相册列表</title>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="/css/elementui.css">
+    <link rel="stylesheet" href="../elementui/css/elementui.css">
+    <script src="../elementui/js/vue.js"></script>
+    <script src="../elementui/js/elementui.js"></script>
+    <script src="../elementui/js/axios.js"></script>
+    <script src="../static/js/jquery-3.3.1.js"></script>
+    <script src="../static/js/utils.js"></script>
+    <script src="../static/layer/layer.js"></script>
+    <script src="../static/js/alert-message.js"></script>
     <!-- 上传图片框样式，不使用上传组件可以删除此样式 -->
     <style>
         .avatar-uploader .el-upload {
@@ -46,10 +53,6 @@
     </el-upload>
 </div>
 </body>
-<script src="/js/vue.js"></script>
-<script src="/js/axios.js"></script>
-<script src="/js/elementui.js"></script>
-<script src="/js/util.js"></script>
 <script>
      new Vue({
         el: '#app',
@@ -62,7 +65,7 @@
         },
         created(){
             // 根据id查询相册列表
-            this.id=getQueryString("id");
+
             axios.get(`/album/findById.do?id=${this.id}`).then(response => {
                 let images= response.data.imageItems;
                 if(images==null || images==""){
@@ -85,7 +88,10 @@
                 axios.post(`/album/update.do`,{id:this.id, imageItems: JSON.stringify(this.fileList) }).then(response => {
                 })
             }
-        }
+        },
+         mounted: function () {
+             this.id = this.$utils.getUrlKey("id");
+         }
     })
 </script>
 </html>
