@@ -21,6 +21,6 @@ public class InitService implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         System.out.println("---缓存预热---");
         categoryService.saveCategoryTreeToRedis();//加载商品分类导航缓存
-        skuService.saveAllPriceToRedis();//加载价格数据
+        // skuService.saveAllPriceToRedis();//加载价格数据
     }
 }

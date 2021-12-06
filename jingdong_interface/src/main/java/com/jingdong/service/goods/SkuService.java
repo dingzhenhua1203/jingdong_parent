@@ -44,12 +44,12 @@ public interface SkuService {
      *  保存价格到缓存
      * @param skuId
      */
-    public void savePriceToRedisBySkuId(String skuId,Integer price);
+    // public void savePriceToRedisBySkuId(String skuId,Integer price);
 
     /**
      *  保存全部价格到缓存
      */
-    public void saveAllPriceToRedis();
+    // public void saveAllPriceToRedis();
 
 
     /**

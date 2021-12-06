@@ -99,8 +99,8 @@ public class SkuServiceImpl implements SkuService {
         skuMapper.deleteByPrimaryKey(id);
     }
 
-    @Autowired
-    private RedisTemplate redisTemplate;
+   /* @Autowired
+    private RedisTemplate redisTemplate;*/
 
     public int findPrice(String id) {
         //从缓存中查询
@@ -113,7 +113,7 @@ public class SkuServiceImpl implements SkuService {
         // redisTemplate.boundHashOps(CacheKey.SKU_PRICE).put(skuId,price);
     }
 
-    public void saveAllPriceToRedis() {
+    /*public void saveAllPriceToRedis() {
         //检查缓存是否存在价格数据
         if(!redisTemplate.hasKey("sku_price")){
             System.out.println("加载全部数据");
@@ -126,7 +126,7 @@ public class SkuServiceImpl implements SkuService {
         }else{
             System.out.println("已存在价格数据，没有全部加载");
         }
-    }
+    }*/
 
 
     @Override

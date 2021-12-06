@@ -10,7 +10,6 @@ import com.jingdong.model.goods.ListBrandsRequest;
 import com.jingdong.pojo.goods.Brand;
 import com.jingdong.service.goods.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -72,13 +71,5 @@ public class BrandServiceImpl implements BrandService {
     public boolean delBrand(Integer id) {
         int count = brandMapper.deleteByPrimaryKey(id);
         return count > 0;
-    }
-
-@Autowired
-    private RedisTemplate redisTemplate;
-
-    @Override
-    public List<Map> findListByCategoryName(String categoryName) {
-       return  brandMapper.findListByCategoryName(categoryName);
     }
 }

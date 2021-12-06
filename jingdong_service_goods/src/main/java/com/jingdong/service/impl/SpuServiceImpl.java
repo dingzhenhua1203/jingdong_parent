@@ -9,7 +9,6 @@ import com.jingdong.dao.SkuMapper;
 import com.jingdong.dao.SpuMapper;
 import com.jingdong.model.base.PageResult;
 import com.jingdong.pojo.goods.*;
-import com.jingdong.service.goods.SkuSearchService;
 import com.jingdong.service.goods.SkuService;
 import com.jingdong.service.goods.SpuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -220,9 +219,6 @@ public class SpuServiceImpl implements SpuService {
     @Autowired
     private SkuService skuService;
 
-    @Autowired
-    private SkuSearchService skuSearchService;
-
     /**
      * 保存商品 SPU+SKU列表
      * @param goods 商品组合实体类
@@ -270,10 +266,10 @@ public class SpuServiceImpl implements SpuService {
             skuMapper.insert(sku);//插入sku表数据
 
 
-            skuService.savePriceToRedisBySkuId(sku.getId()+"",sku.getPrice());//更新价格到redis
+            // skuService.savePriceToRedisBySkuId(sku.getId()+"",sku.getPrice());//更新价格到redis
         }
 
-        skuSearchService.importSkuList(skuList);
+        // skuSearchService.importSkuList(skuList);
 
         spu.setStatus("0");//无论是新增还是修改，都重新将商品的审核状态设置为未审核
         spu.setIsDelete("0");//是否删除

@@ -15,5 +15,4 @@ public interface BrandService {
     Brand previewDetail(Integer id);
     boolean upsertBrand(Brand brand);
     boolean delBrand(Integer id);
-    public List<Map> findListByCategoryName(String categoryName);
 }

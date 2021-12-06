@@ -7,7 +7,7 @@ import com.jingdong.model.base.PageResult;
 import com.jingdong.pojo.goods.Category;
 import com.jingdong.service.goods.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -110,8 +110,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 
-    @Autowired
-    private RedisTemplate redisTemplate;
+    /*@Autowired
+    private RedisTemplate redisTemplate;*/
 
     public List<Map> findCategoryTree() {
         //从缓存中查询
