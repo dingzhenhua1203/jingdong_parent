@@ -9,12 +9,23 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>jingdong_common</module>
-        <module>jingdong_pojo</module>
-        <module>jingdong_common_web</module>
+        <!--<module>jingdong_common_cas</module>-->
         <module>jingdong_common_service</module>
+        <module>jingdong_common_web</module>
         <module>jingdong_interface</module>
-        <module>jingdong_web_manager</module>
+        <module>jingdong_pojo</module>
+        <!--<module>jingdong_service_business</module>-->
         <module>jingdong_service_goods</module>
+        <!--<module>jingdong_service_order</module>
+        <module>jingdong_service_pay</module>
+        <module>jingdong_service_seckill</module>
+        <module>jingdong_service_sms</module>
+        <module>jingdong_service_system</module>
+        <module>jingdong_service_user</module>-->
+        <module>jingdong_web_manager</module>
+        <!--<module>jingdong_web_portal</module>
+        <module>jingdong_web_seckill</module>
+        <module>jingdong_web_user</module>-->
     </modules>
 
     <packaging>pom</packaging>
@@ -35,7 +46,7 @@
         <commons-fileupload.version>1.3.1</commons-fileupload.version>
         <spring.security.version>5.0.5.RELEASE</spring.security.version>
         <jackson.version>2.9.4</jackson.version>
-        <lombok.version>1.16.18</lombok.version>
+        <lombok.version>1.18.20</lombok.version>
     </properties>
     <!-- 依赖管理标签  必须加 -->
     <dependencyManagement>

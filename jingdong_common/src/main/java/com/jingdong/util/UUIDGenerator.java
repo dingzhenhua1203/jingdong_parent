@@ -3,11 +3,6 @@ package com.jingdong.util;
 
 import java.net.InetAddress;
 
-/**
- * 
- * @author
- *
- */
 public class UUIDGenerator {
 
 	

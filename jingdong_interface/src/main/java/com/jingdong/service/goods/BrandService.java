@@ -5,6 +5,7 @@ import com.jingdong.model.goods.ListBrandsRequest;
 import com.jingdong.pojo.goods.Brand;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BrandService {
     List<Brand> listAllBrands();
@@ -14,4 +15,5 @@ public interface BrandService {
     Brand previewDetail(Integer id);
     boolean upsertBrand(Brand brand);
     boolean delBrand(Integer id);
+    public List<Map> findListByCategoryName(String categoryName);
 }

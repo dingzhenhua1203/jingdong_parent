@@ -1,4 +1,4 @@
-package com.jingdong.controller;
+package com.jingdong.controller.goods;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.jingdong.model.base.PageResult;

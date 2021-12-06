@@ -15,10 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-/**
- * @author kevin
- * @since 2020/2/27 12:20 PM
- */
 public class HttpUtil {
 
     public static String post(String url, String body){

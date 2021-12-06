@@ -4,10 +4,6 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.*;
 
-/**
- * @Author: season.Chen
- * @Date: 2019/06/19
- */
 public class JsonUtil {
 
     private JsonUtil() {

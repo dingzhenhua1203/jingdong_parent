@@ -1,6 +1,5 @@
 package com.jingdong.service.impl;
 
-import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
@@ -10,12 +9,12 @@ import com.jingdong.model.base.PageResult;
 import com.jingdong.model.goods.ListBrandsRequest;
 import com.jingdong.pojo.goods.Brand;
 import com.jingdong.service.goods.BrandService;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.provider.ExampleProvider;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -73,5 +72,13 @@ public class BrandServiceImpl implements BrandService {
     public boolean delBrand(Integer id) {
         int count = brandMapper.deleteByPrimaryKey(id);
         return count > 0;
+    }
+
+@Autowired
+    private RedisTemplate redisTemplate;
+
+    @Override
+    public List<Map> findListByCategoryName(String categoryName) {
+       return  brandMapper.findListByCategoryName(categoryName);
     }
 }
