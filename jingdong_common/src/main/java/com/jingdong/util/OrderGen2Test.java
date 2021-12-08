@@ -1,5 +1,6 @@
 package com.jingdong.util;
 
+// import org.apache.commons.lang.math.RandomUtils;
 
 import org.apache.commons.lang.math.RandomUtils;
 
@@ -10,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -58,12 +60,12 @@ public class OrderGen2Test {
                     IP_SUFFIX = ipSuffix.substring(ipSuffix.length() - 2);
                     return IP_SUFFIX;
                 }
-                IP_SUFFIX = RandomUtils.nextInt(10, 20) + "";
+                IP_SUFFIX = RandomUtils.nextInt(new Random(10), 20) + "";
                 return IP_SUFFIX;
             }
         }catch (Exception e){
             System.out.println("获取IP失败:"+e.getMessage());
-            IP_SUFFIX =  RandomUtils.nextInt(10,20)+"";
+            IP_SUFFIX =  RandomUtils.nextInt(new Random(10),20)+"";
             return IP_SUFFIX;
         }
     }
