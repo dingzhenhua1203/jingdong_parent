@@ -3,10 +3,9 @@ package com.jingdong.controller.goods;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.jingdong.model.base.PageResult;
 import com.jingdong.model.base.ResultMsg;
-import com.jingdong.pojo.goods.Goods;
+import com.jingdong.model.goods.GoodsDto;
 import com.jingdong.pojo.goods.Spu;
 import com.jingdong.service.goods.SpuService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -46,7 +45,7 @@ public class SpuController {
 
 
     @PostMapping("/save")
-    public ResultMsg save(@RequestBody Goods goods){
+    public ResultMsg save(@RequestBody GoodsDto goods){
         spuService.saveGoods(goods);
         return new ResultMsg();
     }
@@ -96,7 +95,7 @@ public class SpuController {
     }
 
     @GetMapping("/findGoodsById")
-    public Goods findGoodsById(String id){
+    public GoodsDto findGoodsById(String id){
         return spuService.findGoodsById(id);
     }
 

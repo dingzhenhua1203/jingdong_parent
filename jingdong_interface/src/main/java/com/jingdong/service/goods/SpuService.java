@@ -1,7 +1,7 @@
 package com.jingdong.service.goods;
 
 import com.jingdong.model.base.PageResult;
-import com.jingdong.pojo.goods.Goods;
+import com.jingdong.model.goods.GoodsDto;
 import com.jingdong.pojo.goods.Spu;
 
 import java.util.*;
@@ -74,7 +74,7 @@ public interface SpuService {
      *  保存商品
      * @param goods 商品组合实体类
      */
-    public void saveGoods(Goods goods);
+    public void saveGoods(GoodsDto goods);
 
 
     /**
@@ -82,6 +82,6 @@ public interface SpuService {
      * @param id
      * @return
      */
-    public Goods findGoodsById(String id);
+    public GoodsDto findGoodsById(String id);
 
 }
