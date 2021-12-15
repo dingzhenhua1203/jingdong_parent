@@ -14,14 +14,15 @@
         <module>jingdong_common_web</module>
         <module>jingdong_interface</module>
         <module>jingdong_pojo</module>
-        <!--<module>jingdong_service_business</module>-->
+        <module>jingdong_service_business</module>
         <module>jingdong_service_goods</module>
-        <!--<module>jingdong_service_order</module>
-        <module>jingdong_service_pay</module>
+        <module>jingdong_service_order</module>
+        <module>jingdong_service_config</module>
+<!--        <module>jingdong_service_pay</module>
         <module>jingdong_service_seckill</module>
-        <module>jingdong_service_sms</module>
+        <module>jingdong_service_sms</module>-->
         <module>jingdong_service_system</module>
-        <module>jingdong_service_user</module>-->
+        <module>jingdong_service_user</module>
         <module>jingdong_web_manager</module>
         <!--<module>jingdong_web_portal</module>
         <module>jingdong_web_seckill</module>

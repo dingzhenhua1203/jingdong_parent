@@ -65,7 +65,7 @@
           <el-form-item label="付款状态">
 <el-input v-model="searchMap.payStatus" placeholder="付款状态" class="filter-item" ></el-input></el-form-item>
           <el-form-item label="发货状态">
-<el-input v-model="searchMap.sendStatus" placeholder="发货状态" class="filter-item" ></el-input></el-form-item>
+<el-input v-model="searchMap.consignStatus" placeholder="发货状态" class="filter-item" ></el-input></el-form-item>
           <el-form-item label="备注">
 <el-input v-model="searchMap.remarks" placeholder="备注" class="filter-item" ></el-input></el-form-item>
 
@@ -81,7 +81,7 @@
           <el-table-column prop="orderId" label="订单ID" width="80"></el-table-column>
           <el-table-column prop="orderStatus" label="订单状态" width="80"></el-table-column>
           <el-table-column prop="payStatus" label="付款状态" width="80"></el-table-column>
-          <el-table-column prop="sendStatus" label="发货状态" width="80"></el-table-column>
+          <el-table-column prop="consignStatus" label="发货状态" width="80"></el-table-column>
           <el-table-column prop="remarks" label="备注" width="80"></el-table-column>
 
                     <el-table-column
@@ -113,7 +113,7 @@
         <el-form-item label="订单ID"><el-input v-model="pojo.orderId"></el-input></el-form-item>
         <el-form-item label="订单状态"><el-input v-model="pojo.orderStatus"></el-input></el-form-item>
         <el-form-item label="付款状态"><el-input v-model="pojo.payStatus"></el-input></el-form-item>
-        <el-form-item label="发货状态"><el-input v-model="pojo.sendStatus"></el-input></el-form-item>
+        <el-form-item label="发货状态"><el-input v-model="pojo.consignStatus"></el-input></el-form-item>
         <el-form-item label="备注"><el-input v-model="pojo.remarks"></el-input></el-form-item>
 
                             <!-- 图片上传代码 如页面有图片上传功能放开注释 ****

@@ -2,16 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>管理</title>
+    <title>sku管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="../elementui/css/elementui.css">
-    <script src="../elementui/js/vue.js"></script>
-    <script src="../elementui/js/elementui.js"></script>
-    <script src="../elementui/js/axios.js"></script>
-    <script src="../static/js/jquery-3.3.1.js"></script>
-    <script src="../static/js/utils.js"></script>
-    <script src="../static/layer/layer.js"></script>
-    <script src="../static/js/alert-message.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+
     <!-- 上传图片框样式，不使用上传组件可以删除此样式 -->
     <style>
         .avatar-uploader .el-upload {
@@ -40,52 +37,67 @@
 
     </style>
 </head>
-<body>
+<body class="hold-transition">
 <div id="app">
-    <!--查询表单-->
-    <el-form :inline="true" >
-          <el-form-item label="商品条码">
-<el-input v-model="searchMap.sn" placeholder="商品条码"></el-input></el-form-item>
-          <el-form-item label="SKU名称">
-<el-input v-model="searchMap.name" placeholder="SKU名称"></el-input></el-form-item>
-          <el-form-item label="价格（分）">
-<el-input v-model="searchMap.price" placeholder="价格（分）"></el-input></el-form-item>
-          <el-form-item label="库存数量">
-<el-input v-model="searchMap.num" placeholder="库存数量"></el-input></el-form-item>
-          <el-form-item label="库存预警数量">
-<el-input v-model="searchMap.alertNum" placeholder="库存预警数量"></el-input></el-form-item>
-          <el-form-item label="商品图片">
-<el-input v-model="searchMap.image" placeholder="商品图片"></el-input></el-form-item>
-          <el-form-item label="商品图片列表">
-<el-input v-model="searchMap.images" placeholder="商品图片列表"></el-input></el-form-item>
-          <el-form-item label="重量（克）">
-<el-input v-model="searchMap.weight" placeholder="重量（克）"></el-input></el-form-item>
-          <el-form-item label="创建时间">
-<el-input v-model="searchMap.createTime" placeholder="创建时间"></el-input></el-form-item>
-          <el-form-item label="更新时间">
-<el-input v-model="searchMap.updateTime" placeholder="更新时间"></el-input></el-form-item>
-          <el-form-item label="SPUID">
-<el-input v-model="searchMap.spuId" placeholder="SPUID"></el-input></el-form-item>
-          <el-form-item label="类目ID">
-<el-input v-model="searchMap.categoryId" placeholder="类目ID"></el-input></el-form-item>
-          <el-form-item label="类目名称">
-<el-input v-model="searchMap.categoryName" placeholder="类目名称"></el-input></el-form-item>
-          <el-form-item label="品牌名称">
-<el-input v-model="searchMap.brandName" placeholder="品牌名称"></el-input></el-form-item>
-          <el-form-item label="规格">
-<el-input v-model="searchMap.spec" placeholder="规格"></el-input></el-form-item>
-          <el-form-item label="销量">
-<el-input v-model="searchMap.saleNum" placeholder="销量"></el-input></el-form-item>
-          <el-form-item label="评论数">
-<el-input v-model="searchMap.commentNum" placeholder="评论数"></el-input></el-form-item>
-          <el-form-item label="商品状态 1-正常，2-下架，3-删除">
-<el-input v-model="searchMap.status" placeholder="商品状态 1-正常，2-下架，3-删除"></el-input></el-form-item>
 
-        <el-button type="primary" @click="fetchData()">查询</el-button>
-        <el-button type="primary" @click="formVisible=true;pojo={}">新增</el-button>
-    </el-form>
-    <el-table :data="tableData" border style="width: 100%">
-          <el-table-column prop="id" label="商品id" width="80"></el-table-column>
+    <div class="content-header">
+        <h1>管理<small>sku管理</small></h1>
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>管理</el-breadcrumb-item>
+            <el-breadcrumb-item>sku管理</el-breadcrumb-item>
+        </el-breadcrumb>
+    </div>
+
+    <div class="app-container">
+        <div class="box">
+            <div class="filter-container">
+                <!--查询表单-->
+                <el-form :inline="true" >
+                          <el-form-item label="商品条码">
+<el-input v-model="searchMap.sn" placeholder="商品条码" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="SKU名称">
+<el-input v-model="searchMap.name" placeholder="SKU名称" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="价格（分）">
+<el-input v-model="searchMap.price" placeholder="价格（分）" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="库存数量">
+<el-input v-model="searchMap.num" placeholder="库存数量" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="库存预警数量">
+<el-input v-model="searchMap.alertNum" placeholder="库存预警数量" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="商品图片">
+<el-input v-model="searchMap.image" placeholder="商品图片" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="商品图片列表">
+<el-input v-model="searchMap.images" placeholder="商品图片列表" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="重量（克）">
+<el-input v-model="searchMap.weight" placeholder="重量（克）" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="创建时间">
+<el-input v-model="searchMap.createTime" placeholder="创建时间" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="更新时间">
+<el-input v-model="searchMap.updateTime" placeholder="更新时间" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="SPUID">
+<el-input v-model="searchMap.spuId" placeholder="SPUID" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="类目ID">
+<el-input v-model="searchMap.categoryId" placeholder="类目ID" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="类目名称">
+<el-input v-model="searchMap.categoryName" placeholder="类目名称" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="品牌名称">
+<el-input v-model="searchMap.brandName" placeholder="品牌名称" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="规格">
+<el-input v-model="searchMap.spec" placeholder="规格" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="销量">
+<el-input v-model="searchMap.saleNum" placeholder="销量" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="评论数">
+<el-input v-model="searchMap.commentNum" placeholder="评论数" class="filter-item" ></el-input></el-form-item>
+          <el-form-item label="商品状态 1-正常，2-下架，3-删除">
+<el-input v-model="searchMap.status" placeholder="商品状态 1-正常，2-下架，3-删除" class="filter-item" ></el-input></el-form-item>
+
+                <el-button class="dalfBut" @click="fetchData()">查询</el-button>
+                <el-button type="primary"  class="butT" @click="formVisible=true;pojo={}">新增</el-button>
+                </el-form>
+            </div>
+
+            <el-table :data="tableData" border style="width: 100%">
+                          <el-table-column prop="id" label="商品id" width="80"></el-table-column>
           <el-table-column prop="sn" label="商品条码" width="80"></el-table-column>
           <el-table-column prop="name" label="SKU名称" width="80"></el-table-column>
           <el-table-column prop="price" label="价格（分）" width="80"></el-table-column>
@@ -105,28 +117,31 @@
           <el-table-column prop="commentNum" label="评论数" width="80"></el-table-column>
           <el-table-column prop="status" label="商品状态 1-正常，2-下架，3-删除" width="80"></el-table-column>
 
-        <el-table-column
-                label="操作"  >
-            <template slot-scope="scope">
-                <el-button @click="edit(scope.row.id)" type="text" size="small">修改</el-button>
-                <el-button @click="dele(scope.row.id)" type="text" size="small">删除</el-button>
-            </template>
-        </el-table-column>
-    </el-table>
-    <el-pagination
-            @size-change="fetchData"
-            @current-change="fetchData"
-            :current-page.sync="currentPage"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
-    </el-pagination>
-
-    <!--弹出窗口-->
-    <el-dialog  title="编辑" :visible.sync="formVisible" >
-        <el-form label-width="80px">
-        <el-form-item label="商品条码"><el-input v-model="pojo.sn"></el-input></el-form-item>
+                    <el-table-column
+                            label="操作"  >
+                        <template slot-scope="scope">
+                            <el-button @click="edit(scope.row.id)" size="mini" type="primary" size="small">修改</el-button>
+                            <el-button @click="dele(scope.row.id)" size="mini" type="danger" size="small">删除</el-button>
+                        </template>
+                    </el-table-column>
+            </el-table>
+            <div class="pagination-container">
+                <el-pagination
+                        class="pagiantion"
+                        @size-change="fetchData"
+                        @current-change="fetchData"
+                        :current-page.sync="currentPage"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="size"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="total">
+                </el-pagination>
+            </div>
+            <div class="add-form">
+                <!--弹出窗口-->
+                <el-dialog  title="编辑" :visible.sync="formVisible" >
+                    <el-form label-width="80px">
+                                <el-form-item label="商品条码"><el-input v-model="pojo.sn"></el-input></el-form-item>
         <el-form-item label="SKU名称"><el-input v-model="pojo.name"></el-input></el-form-item>
         <el-form-item label="价格（分）"><el-input v-model="pojo.price"></el-input></el-form-item>
         <el-form-item label="库存数量"><el-input v-model="pojo.num"></el-input></el-form-item>
@@ -145,29 +160,37 @@
         <el-form-item label="评论数"><el-input v-model="pojo.commentNum"></el-input></el-form-item>
         <el-form-item label="商品状态 1-正常，2-下架，3-删除"><el-input v-model="pojo.status"></el-input></el-form-item>
 
-			<!-- 图片上传代码 如页面有图片上传功能放开注释 **** 
-			<el-form-item label="图片">
-                <el-upload
-                        class="avatar-uploader"
-                        action="/upload/native.do"
-                        :show-file-list="false"
-                        :on-success="handleAvatarSuccess"
-                        :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-            -->
-			
-			<el-form-item>
-                <el-button type="primary" @click="save()">保存</el-button>
-                <el-button @click="formVisible = false" >关闭</el-button>
-            </el-form-item>
-        </el-form>
-    </el-dialog>
+                            <!-- 图片上传代码 如页面有图片上传功能放开注释 ****
+                            <el-form-item label="图片">
+                                <el-upload
+                                        class="avatar-uploader"
+                                        action="/upload/native.do"
+                                        :show-file-list="false"
+                                        :on-success="handleAvatarSuccess"
+                                        :before-upload="beforeAvatarUpload">
+                                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                </el-upload>
+                            </el-form-item>
+                            -->
+
+                            <el-form-item>
+                                <el-button type="primary" @click="save()">保存</el-button>
+                                <el-button @click="formVisible = false" >关闭</el-button>
+                            </el-form-item>
+                    </el-form>
+                </el-dialog>
+            </div>
+
+        </div>
+    </div>
+
 
 </div>
 </body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/elementui.js"></script>
 <script>
      new Vue({
         el: '#app',
@@ -189,7 +212,7 @@
         methods:{
             fetchData (){
                 axios.post(`/sku/findPage.do?page=${this.currentPage}&size=${this.size}`,this.searchMap).then(response => {
-                    this.tableData = response.data.results;
+                    this.tableData = response.data.rows;
                     this.total = response.data.total;
                 });
             },
@@ -235,10 +258,7 @@
                 }
                 return isJPG && isLt2M;
             }*/
-        },
-         mounted: function () {
-
-         }
+        }
     })
 </script>
 </html>

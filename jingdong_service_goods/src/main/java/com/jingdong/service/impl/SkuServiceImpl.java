@@ -8,15 +8,12 @@ import com.jingdong.pojo.goods.Sku;
 import com.jingdong.pojo.order.OrderItem;
 import com.jingdong.service.goods.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service(interfaceClass = SkuService.class)
+@Service
 public class SkuServiceImpl implements SkuService {
 
     @Autowired
@@ -99,67 +96,14 @@ public class SkuServiceImpl implements SkuService {
         skuMapper.deleteByPrimaryKey(id);
     }
 
-   /* @Autowired
-    private RedisTemplate redisTemplate;*/
-
+    @Override
     public int findPrice(String id) {
-        //从缓存中查询
-        // return  (Integer)redisTemplate.boundHashOps(CacheKey.SKU_PRICE).get(id);
-        return  0;
+        return 0;
     }
-
-
-    public void savePriceToRedisBySkuId(String skuId,Integer price) {
-        // redisTemplate.boundHashOps(CacheKey.SKU_PRICE).put(skuId,price);
-    }
-
-    /*public void saveAllPriceToRedis() {
-        //检查缓存是否存在价格数据
-        if(!redisTemplate.hasKey("sku_price")){
-            System.out.println("加载全部数据");
-            List<Sku> skuList = skuMapper.selectAll();
-            for(Sku sku:skuList){
-                if("1".equals(sku.getStatus())){
-                    redisTemplate.boundHashOps("sku_price").put(sku.getId(),sku.getPrice());
-                }
-            }
-        }else{
-            System.out.println("已存在价格数据，没有全部加载");
-        }
-    }*/
-
 
     @Override
-    @Transactional
-    public boolean deductionStock(List<OrderItem> orderItemList) {
-        //判断是否可以扣减库存
-        boolean isDeduction=true;
-        List<Sku> deductionList=new ArrayList<>();  //扣减列表
-        for(OrderItem orderItem :orderItemList){
-           //根据skuId 查询库存数量
-           Sku sku = findById(orderItem.getSkuId());
-           if(sku==null){ //如果不存在
-               isDeduction=false;
-           }
-           if(!"1".equals(sku.getStatus())){ //如果下架
-               isDeduction=false;
-           }
-           if(sku.getNum().intValue()<orderItem.getNum()){//如果库存数量不足
-               isDeduction=false;
-           }
-           //加入扣减列表
-           Sku deduction=new Sku();
-           deduction.setId(sku.getId());
-           deduction.setNum(orderItem.getNum());//扣减数量
-           deductionList.add(deduction);
-        }
-        //执行扣减
-        if(isDeduction){  //如果所有的商品都库存充足
-            for(Sku sku:deductionList){  //循环扣减列表
-                skuMapper.updateNum(sku.getId(),-sku.getNum());
-            }
-        }
-        return isDeduction;
+    public boolean deductionStock(List<OrderItem> oderItemList) {
+        return false;
     }
 
     /**
@@ -171,6 +115,10 @@ public class SkuServiceImpl implements SkuService {
         Example example=new Example(Sku.class);
         Example.Criteria criteria = example.createCriteria();
         if(searchMap!=null){
+            // 商品id
+            if(searchMap.get("id")!=null && !"".equals(searchMap.get("id"))){
+                criteria.andLike("id","%"+searchMap.get("id")+"%");
+            }
             // 商品条码
             if(searchMap.get("sn")!=null && !"".equals(searchMap.get("sn"))){
                 criteria.andLike("sn","%"+searchMap.get("sn")+"%");
@@ -186,6 +134,10 @@ public class SkuServiceImpl implements SkuService {
             // 商品图片列表
             if(searchMap.get("images")!=null && !"".equals(searchMap.get("images"))){
                 criteria.andLike("images","%"+searchMap.get("images")+"%");
+            }
+            // SPUID
+            if(searchMap.get("spuId")!=null && !"".equals(searchMap.get("spuId"))){
+                criteria.andLike("spuId","%"+searchMap.get("spuId")+"%");
             }
             // 类目名称
             if(searchMap.get("categoryName")!=null && !"".equals(searchMap.get("categoryName"))){
@@ -219,6 +171,10 @@ public class SkuServiceImpl implements SkuService {
             // 重量（克）
             if(searchMap.get("weight")!=null ){
                 criteria.andEqualTo("weight",searchMap.get("weight"));
+            }
+            // 类目ID
+            if(searchMap.get("categoryId")!=null ){
+                criteria.andEqualTo("categoryId",searchMap.get("categoryId"));
             }
             // 销量
             if(searchMap.get("saleNum")!=null ){

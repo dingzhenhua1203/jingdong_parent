@@ -7,11 +7,8 @@ import com.jingdong.model.base.PageResult;
 import com.jingdong.pojo.goods.Category;
 import com.jingdong.service.goods.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +77,6 @@ public class CategoryServiceImpl implements CategoryService {
      */
     public void add(Category category) {
         categoryMapper.insert(category);
-        saveCategoryTreeToRedis();
     }
 
     /**
@@ -89,7 +85,6 @@ public class CategoryServiceImpl implements CategoryService {
      */
     public void update(Category category) {
         categoryMapper.updateByPrimaryKeySelective(category);
-        saveCategoryTreeToRedis();
     }
 
     /**
@@ -103,45 +98,19 @@ public class CategoryServiceImpl implements CategoryService {
         criteria.andEqualTo("parentId",id);
         int count = categoryMapper.selectCountByExample(example);
         if(count>0){
-            throw  new RuntimeException("存在下级分类不能删除");
+            throw new RuntimeException("存在下级分类不能删除");
         }
         categoryMapper.deleteByPrimaryKey(id);
-        saveCategoryTreeToRedis();
     }
 
-
-    /*@Autowired
-    private RedisTemplate redisTemplate;*/
-
+    @Override
     public List<Map> findCategoryTree() {
-        //从缓存中查询
-        // return (List<Map>)redisTemplate.boundValueOps(CacheKey.CATEGORY_TREE).get();
         return null;
     }
 
-
+    @Override
     public void saveCategoryTreeToRedis() {
-        System.out.println("加载商品分类数据到缓存");
-        Example example=new Example(Category.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("isShow","1");//显示
-        List<Category> categories = categoryMapper.selectByExample(example);
-        List<Map> categoryTree =findByParentId(categories,0);
-        // redisTemplate.boundValueOps(CacheKey.CATEGORY_TREE).set(categoryTree);
-    }
 
-
-    private List<Map> findByParentId(List<Category> categoryList, Integer parentId){
-        List<Map> mapList=new ArrayList<Map>();
-        for(Category category:categoryList){
-            if(category.getParentId().equals(parentId)){
-                Map map =new HashMap();
-                map.put("name",category.getName());
-                map.put("menus",findByParentId(categoryList,category.getId()));
-                mapList.add(map);
-            }
-        }
-        return mapList;
     }
 
     /**
@@ -177,10 +146,6 @@ public class CategoryServiceImpl implements CategoryService {
             // 排序
             if(searchMap.get("seq")!=null ){
                 criteria.andEqualTo("seq",searchMap.get("seq"));
-            }
-            // 级别
-            if(searchMap.get("level")!=null ){
-                criteria.andEqualTo("level",searchMap.get("level"));
             }
             // 上级ID
             if(searchMap.get("parentId")!=null ){

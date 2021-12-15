@@ -9,6 +9,7 @@
 	<http pattern="/login_error.html" security="none"></http>
 	<http pattern="/*.do" security="none"></http>
 	<http pattern="/*/*.do" security="none"></http>
+	<http pattern="/static/**" security="none"></http>
 	<!-- 页面拦截规则		-->
 	<http>
 		<intercept-url pattern="/**" access="isAuthenticated()" />
