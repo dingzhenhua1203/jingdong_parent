@@ -2,6 +2,7 @@ package com.jingdong.service.system;
 
 import com.jingdong.model.base.PageResult;
 import com.jingdong.pojo.system.Admin;
+import com.jingdong.pojo.system.Resource;
 
 import java.util.List;
 import java.util.Map;
@@ -11,9 +12,28 @@ import java.util.Map;
  */
 public interface ResourceService {
 
+    public List<Resource> findAll();
 
 
-    public List<String> findResKeyByLoginName(String  loginName);
+    public PageResult<Resource> findPage(int page, int size);
 
+
+    public List<Resource> findList(Map<String, Object> searchMap);
+
+
+    public PageResult<Resource> findPage(Map<String, Object> searchMap, int page, int size);
+
+
+    public Resource findById(Integer id);
+
+    public void add(Resource resource);
+
+
+    public void update(Resource resource);
+
+
+    public void delete(Integer id);
+
+    public List<String> findResKeyByLoginName(String loginName);
 
 }

@@ -45,31 +45,19 @@ public class AdminController {
     @PostMapping("/add")
     public ResultMsg add(@RequestBody Admin admin){
         adminService.add(admin);
-        return new ResultMsg();
+        return ResultMsg.SuccessResult(true);
     }
 
     @PostMapping("/update")
     public ResultMsg update(@RequestBody Admin admin){
         adminService.update(admin);
-        return new ResultMsg();
+        return ResultMsg.SuccessResult(true);
     }
 
     @GetMapping("/delete")
     public ResultMsg delete(Integer id){
         adminService.delete(id);
-        return new ResultMsg();
+        return ResultMsg.SuccessResult(true);
     }
-
-    /**
-     * 保存管理员角色
-     * @param adminId
-     * @param roleIds
-     */
-    @PostMapping("/saveAdminRoles")
-    public ResultMsg saveAdminRoles(Integer adminId,@RequestBody Integer [] roleIds){
-        adminService.saveAdminRoles(adminId,roleIds);
-        return new ResultMsg();
-    }
-
 
 }

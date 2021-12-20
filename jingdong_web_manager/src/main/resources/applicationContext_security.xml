@@ -6,7 +6,7 @@
 
 	<!-- 以下页面不被拦截-->
 	<http pattern="/login.html" security="none"></http>
-	<http pattern="/login_error.html" security="none"></http>
+<!--	<http pattern="/login_error.html" security="none"></http>-->
 	<http pattern="/*.do" security="none"></http>
 	<http pattern="/*/*.do" security="none"></http>
 	<http pattern="/static/**" security="none"></http>
@@ -18,9 +18,10 @@
 		<intercept-url pattern="/brand/*.do" access="hasAuthority('brand')" />
 		<intercept-url pattern="/spu/save.do" access="hasAnyAuthority('goods_add','goods_edit')" />
 		-->
+		<!--authentication-failure-url="/login_error.html"-->
 		<form-login login-page="/login.html"
 					default-target-url="/index.html"
-					authentication-failure-url="/login_error.html"
+
 					authentication-success-handler-ref="loginAuthenticationFilter"/>
 		<csrf disabled="true"/>
 		<logout/>

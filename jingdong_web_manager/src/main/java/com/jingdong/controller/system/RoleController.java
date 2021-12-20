@@ -45,19 +45,19 @@ public class RoleController {
     @PostMapping("/add")
     public ResultMsg add(@RequestBody Role role){
         roleService.add(role);
-        return new ResultMsg();
+        return ResultMsg.SuccessResult(true);
     }
 
     @PostMapping("/update")
     public ResultMsg update(@RequestBody Role role){
         roleService.update(role);
-        return new ResultMsg();
+        return ResultMsg.SuccessResult(true);
     }
 
     @GetMapping("/delete")
     public ResultMsg delete(Integer id){
         roleService.delete(id);
-        return new ResultMsg();
+        return ResultMsg.SuccessResult(true);
     }
 
 }

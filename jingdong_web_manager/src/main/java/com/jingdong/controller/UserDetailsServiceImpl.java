@@ -30,8 +30,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         map.put("loginName",s);
         map.put("status","1");
         List<Admin> list = adminService.findList(map);
-        if(list.size()==0){
-            return null;
+        if(list==null || list.isEmpty()){
+            return  null;
         }
         //构建权限列表
         List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();

@@ -1,4 +1,5 @@
 package com.jingdong.service.impl;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -20,6 +21,7 @@ public class AdminServiceImpl implements AdminService {
 
     /**
      * 返回全部记录
+     *
      * @return
      */
     public List<Admin> findAll() {
@@ -28,18 +30,20 @@ public class AdminServiceImpl implements AdminService {
 
     /**
      * 分页查询
+     *
      * @param page 页码
      * @param size 每页记录数
      * @return 分页结果
      */
     public PageResult<Admin> findPage(int page, int size) {
-        PageHelper.startPage(page,size);
+        PageHelper.startPage(page, size);
         Page<Admin> admins = (Page<Admin>) adminMapper.selectAll();
-        return new PageResult<Admin>(admins.getTotal(),admins.getResult());
+        return new PageResult<Admin>(admins.getTotal(), admins.getResult());
     }
 
     /**
      * 条件查询
+     *
      * @param searchMap 查询条件
      * @return
      */
@@ -50,20 +54,22 @@ public class AdminServiceImpl implements AdminService {
 
     /**
      * 分页+条件查询
+     *
      * @param searchMap
      * @param page
      * @param size
      * @return
      */
     public PageResult<Admin> findPage(Map<String, Object> searchMap, int page, int size) {
-        PageHelper.startPage(page,size);
+        PageHelper.startPage(page, size);
         Example example = createExample(searchMap);
         Page<Admin> admins = (Page<Admin>) adminMapper.selectByExample(example);
-        return new PageResult<Admin>(admins.getTotal(),admins.getResult());
+        return new PageResult<Admin>(admins.getTotal(), admins.getResult());
     }
 
     /**
      * 根据Id查询
+     *
      * @param id
      * @return
      */
@@ -73,6 +79,7 @@ public class AdminServiceImpl implements AdminService {
 
     /**
      * 新增
+     *
      * @param admin
      */
     public void add(Admin admin) {
@@ -81,6 +88,7 @@ public class AdminServiceImpl implements AdminService {
 
     /**
      * 修改
+     *
      * @param admin
      */
     public void update(Admin admin) {
@@ -88,7 +96,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     /**
-     *  删除
+     * 删除
+     *
      * @param id
      */
     public void delete(Integer id) {
@@ -102,29 +111,31 @@ public class AdminServiceImpl implements AdminService {
 
     /**
      * 构建查询条件
+     *
      * @param searchMap
      * @return
      */
-    private Example createExample(Map<String, Object> searchMap){
-        Example example=new Example(Admin.class);
+    private Example createExample(Map<String, Object> searchMap) {
+        Example example = new Example(Admin.class);
         Example.Criteria criteria = example.createCriteria();
-        if(searchMap!=null){
+
+        if (searchMap != null) {
             // 用户名
-            if(searchMap.get("loginName")!=null && !"".equals(searchMap.get("loginName"))){
+            if (searchMap.get("loginName") != null && !"".equals(searchMap.get("loginName"))) {
                 //criteria.andLike("loginName","%"+searchMap.get("loginName")+"%");
                 criteria.andEqualTo("loginName",searchMap.get("loginName"));
             }
             // 密码
-            if(searchMap.get("password")!=null && !"".equals(searchMap.get("password"))){
-                criteria.andLike("password","%"+searchMap.get("password")+"%");
+            if (searchMap.get("password") != null && !"".equals(searchMap.get("password"))) {
+                criteria.andLike("password", "%" + searchMap.get("password") + "%");
             }
             // 状态
-            if(searchMap.get("status")!=null && !"".equals(searchMap.get("status"))){
-                criteria.andEqualTo("status",searchMap.get("status"));
+            if (searchMap.get("status") != null && !"".equals(searchMap.get("status"))) {
+                criteria.andEqualTo("status", searchMap.get("status"));
             }
             // id
-            if(searchMap.get("id")!=null ){
-                criteria.andEqualTo("id",searchMap.get("id"));
+            if (searchMap.get("id") != null) {
+                criteria.andEqualTo("id", searchMap.get("id"));
             }
 
         }
