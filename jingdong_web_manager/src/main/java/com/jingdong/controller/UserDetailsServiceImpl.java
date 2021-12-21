@@ -33,12 +33,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(list==null || list.isEmpty()){
             return  null;
         }
+
         //构建权限列表
         List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
-        List<String> resKeyList = resourceService.findResKeyByLoginName(s);
+
+        /*List<String> resKeyList = resourceService.findResKeyByLoginName(s);
         for(String resKey :resKeyList ){
             grantedAuths.add(new SimpleGrantedAuthority(resKey));
-        }
-        return new User(s,list.get(0).getPassword(), grantedAuths);
+        }*/
+        grantedAuths.add( new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return new User(s,list.get(0).getPassword(),grantedAuths);
     }
 }

@@ -125,10 +125,7 @@ public class AdminServiceImpl implements AdminService {
                 //criteria.andLike("loginName","%"+searchMap.get("loginName")+"%");
                 criteria.andEqualTo("loginName",searchMap.get("loginName"));
             }
-            // 密码
-            if (searchMap.get("password") != null && !"".equals(searchMap.get("password"))) {
-                criteria.andLike("password", "%" + searchMap.get("password") + "%");
-            }
+
             // 状态
             if (searchMap.get("status") != null && !"".equals(searchMap.get("status"))) {
                 criteria.andEqualTo("status", searchMap.get("status"));

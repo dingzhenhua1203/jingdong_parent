@@ -6,6 +6,8 @@
 
 	<!-- 以下页面不被拦截-->
 	<http pattern="/login.html" security="none"></http>
+	<http pattern="/goods/*.html" security="none"></http>
+	<http pattern="/system/*.html" security="none"></http>
 <!--	<http pattern="/login_error.html" security="none"></http>-->
 	<http pattern="/*.do" security="none"></http>
 	<http pattern="/*/*.do" security="none"></http>
