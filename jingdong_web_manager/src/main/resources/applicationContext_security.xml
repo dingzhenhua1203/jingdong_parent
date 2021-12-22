@@ -10,7 +10,7 @@
 	<http pattern="/system/*.html" security="none"></http>
 <!--	<http pattern="/login_error.html" security="none"></http>-->
 	<http pattern="/*.do" security="none"></http>
-	<http pattern="/*/*.do" security="none"></http>
+	<!--<http pattern="/*/*.do" security="none"></http>-->
 	<http pattern="/static/**" security="none"></http>
 	<http pattern="/*.ico" security="none"></http>
 	<!-- 页面拦截规则		-->
@@ -26,7 +26,7 @@
 		<!--authentication-failure-url="/login_error.html"-->
 		<form-login login-page="/login.html"
 					default-target-url="/index.html"
-					authentication-failure-url="/login.html"
+					authentication-failure-url="/login.html?error"
 					authentication-success-handler-ref="loginAuthenticationFilter"/>
 		<csrf disabled="true"/>
 		<logout/>
@@ -50,6 +50,7 @@
 
 	<global-method-security pre-post-annotations="enabled" />
 
-	<beans:bean id="loginAuthenticationFilter" class="com.jingdong.controller.LoginAuthenticationFilter"></beans:bean>
+	<beans:bean id="loginAuthenticationFilter" class="com.jingdong.controller.LoginAuthenticationFilter">
+	</beans:bean>
 
 </beans:beans>

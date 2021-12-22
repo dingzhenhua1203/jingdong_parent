@@ -3,6 +3,7 @@ package com.jingdong.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.jingdong.pojo.system.LoginLog;
 import com.jingdong.service.system.LoginLogService;
+import com.jingdong.util.WebUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -33,7 +34,7 @@ public class LoginAuthenticationFilter implements AuthenticationSuccessHandler {
         loginLog.setLoginName(username);
         loginLog.setBrowserName(browserName);
         loginLog.setLoginTime(new Date());
-        // loginLog.setLocation(WebUtil.getCityByIP(ip));//保存城市信息
+        loginLog.setLocation(WebUtil.getCityByIP(ip));//保存城市信息
         loginLogService.add(loginLog);
         request.getRequestDispatcher("/index.html").forward(request, response);
     }
