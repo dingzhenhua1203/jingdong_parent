@@ -5,7 +5,7 @@ import com.jingdong.model.base.PageResult;
 import com.jingdong.model.base.ResultMsg;
 import com.jingdong.model.goods.GoodsDto;
 import com.jingdong.pojo.goods.Spu;
-import com.jingdong.service.goods.SpuService;
+import com.jingdong.goods.service.SpuService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;

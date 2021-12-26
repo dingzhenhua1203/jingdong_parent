@@ -3,17 +3,15 @@ package com.jingdong.controller.order;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.jingdong.pojo.goods.Category;
 import com.jingdong.pojo.order.CategoryReport;
-import com.jingdong.service.goods.CategoryService;
-import com.jingdong.service.order.CategoryReportService;
+import com.jingdong.goods.service.CategoryService;
+import com.jingdong.order.service.CategoryReportService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController

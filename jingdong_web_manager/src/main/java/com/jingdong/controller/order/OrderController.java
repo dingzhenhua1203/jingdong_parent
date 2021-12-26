@@ -4,7 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.jingdong.model.base.PageResult;
 import com.jingdong.model.base.ResultMsg;
 import com.jingdong.pojo.order.Order;
-import com.jingdong.service.order.OrderService;
+import com.jingdong.order.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;

@@ -1,6 +1,6 @@
 package com.jingdong.controller.order;
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.jingdong.service.order.OrderService;
+import com.jingdong.order.service.OrderService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.util.Date;

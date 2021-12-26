@@ -3,9 +3,8 @@ package com.jingdong.controller.goods;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.jingdong.model.base.PageResult;
 import com.jingdong.model.base.ResultMsg;
-import com.jingdong.pojo.goods.Pref;
 import com.jingdong.pojo.goods.Sku;
-import com.jingdong.service.goods.SkuService;
+import com.jingdong.goods.service.SkuService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;

@@ -27,9 +27,14 @@
 				</bean>
 			</array>
 		</property>
+
+		<!--configLocation属性指定mybatis的核心配置文件-->
+		<!--<property  name = "configLocation"  value = "resources/configuration.xml" />-->
 	</bean>
+	<!--MapperScannerConfigurer配置-->
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.jingdong.dao" />
+		<!--basePackage指定要扫描的包，在此包之下的映射器都会被搜索到。可指定多个包，包与包之间用逗号或分号分隔-->
+		<property name="basePackage" value="com.jingdong.dao,com.jingdong.goods.dao,com.jingdong.order.dao" />
 	</bean>
 
 	<!-- 事务管理器  -->

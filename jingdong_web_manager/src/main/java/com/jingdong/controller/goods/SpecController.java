@@ -1,11 +1,10 @@
 package com.jingdong.controller.goods;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.jingdong.goods.service.SpecService;
 import com.jingdong.model.base.PageResult;
 import com.jingdong.model.base.ResultMsg;
-import com.jingdong.pojo.goods.Sku;
 import com.jingdong.pojo.goods.Spec;
-import com.jingdong.service.goods.SpecService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;

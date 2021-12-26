@@ -4,7 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.jingdong.model.base.PageResult;
 import com.jingdong.model.base.ResultMsg;
 import com.jingdong.pojo.order.ReturnCause;
-import com.jingdong.service.order.ReturnCauseService;
+import com.jingdong.order.service.ReturnCauseService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;

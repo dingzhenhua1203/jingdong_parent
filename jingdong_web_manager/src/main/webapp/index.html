@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/theme-chalk.css">
     <link rel="stylesheet" href="/static/css/login_style.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/goods/brand.upload.image.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/goods/brand.upload.image.css"/>
     <script src="/static/elementui/js/vue.js"></script>
     <script src="/static/elementui/js/elementui.js"></script>
     <script src="/static/elementui/js/axios.js"></script>
@@ -27,86 +27,96 @@
     <script src="/static/js/menu.js"></script>
 
     <style type="text/css">
-    .el-main{
-        position: absolute;
-        top: 83px;
-        bottom: 0px;
-        left: 220px;
-        right: 10px;
-        padding: 0;
-    }
+        .el-main {
+            position: absolute;
+            top: 83px;
+            bottom: 0px;
+            left: 220px;
+            right: 10px;
+            padding: 0;
+        }
     </style>
 </head>
 
 <body class="hold-transition skin-purple sidebar-mini">
-    <div id="app">
-        <el-container>
-            <el-header  class="main-header" style="height:70px;">
-                
-                <nav class="navbar navbar-static-top" :class=''>
-                    <!-- Logo -->
-                    <a href="index.html" class="logo" style="text-align:center">
-                        <span class="logo-lg"  v-show='!isCollapse'><img src="img/logo.png"></span>
-                    </a>
-                    <div class="right-menu">
-                        <el-dropdown class="avatar-container right-menu-item" trigger="click">
-                            <div class="avatar-wrapper">
-                                <img src="/static/img/user2-160x160.jpg" class="user-avatar">
-                                {{currentUser}}
-                            </div>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item divided>
-                                    <span style="display:block;">修改密码</span>
-                                </el-dropdown-item>
-                                <el-dropdown-item divided>
-                                        <span style="display:block;" @click="logout">退出</span>
-                                    </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </div>
-                    <div class="topbar-title">
-                        <!-- 注意：这里就是topNavState作用之处，根据当前路由所在根路由的type值判断显示不同顶部导航菜单 -->
-                        <el-row>
-                          <el-col :span="24">
-                            <el-menu class="el-menu-demo headNav" mode="horizontal" :default-active="defaultActiveIndex">
-                              <el-menu-item :index="item.path" v-for="item in menuList" @click="handleSelect(item)" ><i class="iconNav" :class="item.icon"></i>{{item.title}}</el-menu-item>
-                            </el-menu>
-                          </el-col>
-                        </el-row>
-                      </div>
-                    
-                    
-                </nav>
-            </el-header>
-            <el-container>
-                <el-aside :width="tabWidth+'px'" id="asieHeight">
-                    
-                    <el-menu default-active="2-1-2"  class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :default-openeds="openeds">
-                        <sidebar-item :key="data.path" v-for="data in data.children" :item="data" />
-                    </el-menu>
-                </el-aside>
-                <el-container>
-                    <iframe name="right" id="iframepage" class="el-main" src="commodity-add.html" width="100%" height="100%" frameborder="0" ranat="server"></iframe>
-                </el-container>
-            </el-container>
-        </el-container>
-        <el-footer>
-            <footer class="main-footer">
-                <div class="pull-right hidden-xs">
-                    <b>Version</b> 1.0
+<div id="app">
+    <el-container>
+        <el-header class="main-header" style="height:60px;">
+            <!-- 导航 -->
+            <nav class="navbar navbar-static-top" :class=''>
+                <!-- Logo -->
+                <a href="all-admin-index.html" class="logo" style="text-align:center">
+                    <span class="logo-lg" v-show='!isCollapse'><img src="/static/img/logo.png"></span>
+                </a>
+                <div class="right-menu">
+                    <el-dropdown class="avatar-container right-menu-item" trigger="click">
+                        <div class="avatar-wrapper">
+                            <img src="/static/img/user2-160x160.jpg" class="user-avatar">
+                            {{loginName}}
+                        </div>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item divided>
+                                <span style="display:block;">修改密码</span>
+                            </el-dropdown-item>
+                            <el-dropdown-item divided>
+                                <span style="display:block;" @click="logout">退出</span>
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </div>
-                <strong>Copyright &copy; 2021 <a href="http://www.dcmickey.cn">dcmickey</a>.</strong> All rights reserved.
-            </footer>
-            <!-- 底部导航 /-->
-        </el-footer>
-    </div>
+                <!-- 导航 -->
+                <div class="topbar-title">
+                    <el-row>
+                        <el-col :span="24">
+                            <el-menu class="el-menu-demo headNav" mode="horizontal"
+                                     :default-active="defaultActiveIndex">
+                                <el-menu-item :index="item.path" v-for="item in menuList" @click="handleSelect(item)"><i
+                                        class="iconNav" :class="item.icon"></i>{{item.title}}
+                                </el-menu-item>
+                            </el-menu>
+                        </el-col>
+                    </el-row>
+                </div>
+                <!-- end -->
+            </nav>
+            <!-- end -->
+        </el-header>
+        <el-container>
+            <!-- 左侧菜单 -->
+            <el-aside :width="tabWidth+'px'" id="asieHeight">
+                <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen"
+                         @close="handleClose" :collapse="isCollapse" :default-openeds="openeds">
+                    <sidebar-item :key="data.path" v-for="data in data.children" :item="data"/>
+                </el-menu>
+            </el-aside>
+            <!-- end -->
+            <!-- iframe导入对应的模块内容 -->
+            <el-container>
+                <iframe name="right" id="iframepage" :src="linkUrl" style="width:100%;magrin:0 auto" marginwidth="0"
+                        marginheight="0" height="100%" frameborder="0" ranat="server"></iframe>
+                <!-- <iframe  name="mainFrame" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" src="commodity-add.html" style="width:100%;magrin:0 auto"></iframe> -->
+            </el-container>
+            <!--  -->
+        </el-container>
+    </el-container>
+    <!-- 底部 -->
+    <el-footer>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0
+            </div>
+            <strong>Copyright &copy; 2021 <a href="https://www.dcmickey.cn">dcmickey</a>.</strong> All rights reserved.
+        </footer>
+    </el-footer>
+    <!-- end -->
+</div>
 </body>
 <script>
     Vue.component('sidebar-item', {
         props: {
             item: {
-            type: Object,
-            required: true
+                type: Object,
+                required: true
             }
         },
         template: `
@@ -139,30 +149,45 @@
         el: '#app',
         // router,
         data() {
-        return { 
-            visible: false,
-            isCollapse: false,
-            tabWidth: 220,
-            test1: 1,
-            intelval: null,
-            winfo:'winfo',
-            data:[],
-            currentUser:'',
-            menuList:[],
-            defaultActiveIndex: "1",
-            openeds: [],
+            return {
+                visible: false,
+                isCollapse: false,
+                tabWidth: 180,
+                test1: 1,
+                intelval: null,
+                winfo: 'winfo',
+                data: [],
+                menuList: [],
+                defaultActiveIndex: "2",
+                defaultActive: '2-1-2',
+                openeds: [],
+                loginName: '',
+                linkUrl: 'all-item-list.html'
             }
         },
         created() {
-            axios.get("/menu/findMenu.do").then( response=>{
-                this.menuList=response.data;
-                this.data=response.data[0]
-                var data=[]
-                for(var i=0;i<response.data[0].children.length;i++){
-                    data.push(response.data[0].children[i].path)
+            var linkUrl = localStorage.getItem('linkUrl')
+            var activeIndex = localStorage.getItem('activeIndex')
+            if (linkUrl !== 'undefined') {
+                this.linkUrl = linkUrl
+                this.defaultActiveIndex = activeIndex
+            }
+
+            //加载菜单数据
+            axios.get('/menu/findMenu.do').then(response => {
+                // 获取导航数据
+                this.menuList = response.data
+                // 导航默认选择
+                this.data = response.data[1]
+                var data = []
+                if (this.data[1] && this.data[1].children) {
+                    for (var i = 0; i < this.data[1].children.length; i++) {
+                        data.push(this.data[1].children[i].path)
+                    }
                 }
-                this.openeds=data
-            })
+                this.openeds = data
+            });
+
             this.getloginUser();
         },
         methods: {
@@ -172,97 +197,50 @@
             handleClose(key, keyPath) {
                 console.log(key, keyPath);
             },
+            // 选择顶部导航菜单，联动左侧菜单
+            handleSelect(key) {
+                localStorage.setItem('linkUrl', key.linkUrl)
+                localStorage.setItem('activeIndex', key.path)
+                var data = [];
+                if (this.data[1].children) {
+                    for (var i = 0; i < key.children.length; i++) {
+                        data.push(key.children[i].path)
+                        this.defaultActive = key.children[0].children[0].path
+                        this.linkUrl = key.children[0].linkUrl
+                    }
+                }
+                this.openeds = data
+                this.data = key
+            },
             getloginUser() {
                 axios.get(`/login/name.do`).then(resp => {
                     console.log(JSON.stringify(resp));
-                    this.currentUser = resp.data.name;
+                    this.loginName = resp.data.name;
                 });
             },
-            logout(){
+            logout() {
                 axios.post(`/logout`).then(resp => {
-                    location.href=`/login.html`;
+                    location.href = `/login.html`;
                 });
-            },
-            isClossTabFun(){
-                clearInterval(this.intelval);
-                if(!this.isCollapse){
-                    this.intelval = setInterval(()=>{
-                        if(this.tabWidth<= 70)
-                            clearInterval(this.intelval);
-                        this.tabWidth -= 1;
-                    }, 0);
-                    this.winfo='winfo'
-                    $(".el-main").css({
-                        'width':$('body').width()-53 + 'px',
-                        'left':53+'px'
-                    });
-                    $(".el-footer").css({
-                        'left':50+'px'
-                    });
-                }else{
-                    this.tabWidth = 200;
-                    var wd = 200;
-                    $(".el-main").css({
-                        'width':$('body').width() - wd + 'px',
-                        'left':200+'px'
-                    });
-                    $(".el-footer").css({
-                        'left':180+'px'
-                    });
-                }
-                this.isCollapse = !this.isCollapse;
-            },
-            hasOneShowingChild(children, parent) {
-            // console.log(parent)
-            const showingChildren = children.filter(item => {
-                if (item.hidden) {
-                return false
-                } else {
-                // Temp set(will be used if only has one showing child)
-                this.onlyOneChild = item
-                return true
-                }
-            })
-
-            // When there is only one child router, the child router is displayed by default
-            if (showingChildren.length === 1) {
-                return true
-            }
-
-            // Show parent if there are no child router to display
-            if (showingChildren.length === 0) {
-                this.onlyOneChild = { ... parent, path: '', noShowingChildren: true }
-                return true
-            }
-
-            return false
-            },
-            resolvePath(routePath) {
-            if (this.isExternalLink(routePath)) {
-                return routePath
-            }
-            return path.resolve(this.basePath, routePath)
-            },
-            isExternalLink(routePath) {
-            return isExternal(routePath)
-            },
-            isExternal(path) {
-            return /^(https?:|mailto:|tel:)/.test(path)
             },
             handleSelect(key) {
-                var data=[]
-                for(var i=0;i<key.children.length;i++){
+                var data = []
+                for (var i = 0; i < key.children.length; i++) {
                     data.push(key.children[i].path)
                 }
-                this.openeds=data
-                this.data=key
+                this.openeds = data
+                this.data = key
             }
         }
     })
-    $(function() {
-            var wd = 220;
-            $(".el-main").css('width', $('body').width() - wd + 'px');
-            $("#asieHeight").css('height',$(window).height()+'px')
-        })
+
+    window.onload = windowHeight; //页面载入完毕执行函数
+    function windowHeight() {
+        var wd = 220;
+        var iframepage = document.getElementById("iframepage")
+        var asieHeight = document.getElementById("asieHeight")
+        iframepage.style.width = document.documentElement.clientWidth - wd + 'px'
+        asieHeight.style.height = document.documentElement.clientHeight + 'px'
+    }
 </script>
 </html>

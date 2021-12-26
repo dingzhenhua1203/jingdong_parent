@@ -1,9 +1,7 @@
 package com.jingdong.controller.goods;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.jingdong.service.goods.SkuService;
-import com.jingdong.service.goods.StockBackService;
-import com.jingdong.service.order.OrderService;
+import com.jingdong.goods.service.StockBackService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
