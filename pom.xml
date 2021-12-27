@@ -22,6 +22,7 @@
         <module>jingdong_service_system</module>
         <module>jingdong_service_user</module>
         <module>jingdong_web_manager</module>
+        <module>jingdong_web_protal</module>
         <!--<module>jingdong_web_portal</module>
         <module>jingdong_web_seckill</module>
         <module>jingdong_web_user</module>-->
