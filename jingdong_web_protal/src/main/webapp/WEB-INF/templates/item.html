@@ -1910,7 +1910,7 @@
                                 </div>
                             </dt>
                             <dd th:each="sv:${spec.value}">
-                                <a href="javascript:;" class="selected">[[${sv}]]
+                                <a href="javascript:;" th:class="${sv.checked ?'selected':''}">[[${sv.option}]]
                                     <span title="点击取消选择">&nbsp;</span>
                                 </a>
                             </dd>

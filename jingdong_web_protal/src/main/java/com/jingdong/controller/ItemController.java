@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequestMapping("item")
 @RestController
@@ -89,8 +91,23 @@ public class ItemController {
             }
             // 规格参数选择项
             // {"规格":["88片","80片","104片","96片"]}
-            Map specItems = JSON.parseObject(spu.getSpecItems());
-            templateDataModel.put("specItems", specItems);
+            Map<String, List> specItems = (Map) JSON.parseObject(spu.getSpecItems());
+            Map<String, List> new_specItems = new HashMap<>();
+            // 还有一种遍历方式
+            /*for (Map.Entry entry : specItems.entrySet()) {
+                List<String> vals = (List)entry.getValue();
+            }*/
+            for (String key : specItems.keySet()) {
+                List<String> vals = specItems.get(key);
+                List<Map> newMap = vals.stream().map(x -> {
+                    Map newRules = new HashMap();
+                    newRules.put("option", x);
+                    newRules.put("checked", skuItems.get(key).equals(x));
+                    return newRules;
+                }).collect(Collectors.toList());
+                new_specItems.put(key, newMap);
+            }
+            templateDataModel.put("specItems", new_specItems);
             // item.getCategoryId();
             context.setVariables(templateDataModel);
 
