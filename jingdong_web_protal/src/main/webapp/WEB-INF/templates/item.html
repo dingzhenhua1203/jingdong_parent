@@ -1903,90 +1903,17 @@
                 </div>
                 <div class="clearfix choose">
                     <div id="specification" class="summary-wrap clearfix">
-                        <dl>
+                        <dl th:each="spec:${specItems}">
                             <dt>
                                 <div class="fl title">
-                                    <i>选择颜色</i>
+                                    <i>[[${spec.key}]]</i>
                                 </div>
                             </dt>
-                            <dd>
-                                <a href="javascript:;" class="selected">金色
+                            <dd th:each="sv:${spec.value}">
+                                <a href="javascript:;" class="selected">[[${sv}]]
                                     <span title="点击取消选择">&nbsp;</span>
                                 </a>
                             </dd>
-                            <dd>
-                                <a href="javascript:;">银色</a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;">黑色</a>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>
-                                <div class="fl title">
-                                    <i>内存容量</i>
-                                </div>
-                            </dt>
-                            <dd>
-                                <a href="javascript:;" class="selected">16G
-                                    <span title="点击取消选择">&nbsp;</span>
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;">64G</a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;" class="locked">128G</a>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>
-                                <div class="fl title">
-                                    <i>选择版本</i>
-                                </div>
-                            </dt>
-                            <dd>
-                                <a href="javascript:;" class="selected">公开版
-                                    <span title="点击取消选择">&nbsp;</span>
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;">移动版</a>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>
-                                <div class="fl title">
-                                    <i>购买方式</i>
-                                </div>
-                            </dt>
-                            <dd>
-                                <a href="javascript:;" class="selected">官方标配
-                                    <span title="点击取消选择">&nbsp;</span>
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;">移动优惠版</a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;" class="locked">电信优惠版</a>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>
-                                <div class="fl title">
-                                    <i>套　　装</i>
-                                </div>
-                            </dt>
-                            <dd>
-                                <a href="javascript:;" class="selected">保护套装
-                                    <span title="点击取消选择">&nbsp;</span>
-                                </a>
-                            </dd>
-                            <dd>
-                                <a href="javascript:;" class="locked">充电套装</a>
-                            </dd>
-
                         </dl>
                     </div>
 
@@ -2235,20 +2162,12 @@
                     <div class="tab-content tab-wraped">
                         <div id="one" class="tab-pane active">
                             <ul class="goods-intro unstyled">
-                                <li>分辨率：1920*1080(FHD)</li>
-                                <li>后置摄像头：1200万像素</li>
-                                <li>前置摄像头：500万像素</li>
-                                <li>核 数：其他</li>
-                                <li>频 率：以官网信息为准</li>
-                                <li>品牌： Apple</li>
-                                <li>商品名称：APPLEiPhone 6s Plus</li>
-                                <li>商品编号：1861098</li>
-                                <li>商品毛重：0.51kg</li>
-                                <li>商品产地：中国大陆</li>
-                                <li>热点：指纹识别，Apple Pay，金属机身，拍照神器</li>
-                                <li>系统：苹果（IOS）</li>
-                                <li>像素：1000-1600万</li>
-                                <li>机身内存：64GB</li>
+                                <li th:each="para:${paraItems}" th:text="${para.key+':'+para.value}">
+                                </li>
+                            </ul>
+                            <ul class="goods-intro unstyled">
+                                <li th:each="para:${spuItems}" th:text="${para.key+':'+para.value}">
+                                </li>
                             </ul>
                             <!--utext 用来输出html代码 而不是文本-->
                             <div class="intro-detail" th:utext="${spu.introduction}">

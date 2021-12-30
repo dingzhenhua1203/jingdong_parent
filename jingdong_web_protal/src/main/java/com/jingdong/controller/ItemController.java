@@ -1,6 +1,8 @@
 package com.jingdong.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.jingdong.goods.service.CategoryService;
 import com.jingdong.goods.service.SkuService;
 import com.jingdong.goods.service.SpuService;
@@ -49,32 +51,46 @@ public class ItemController {
     @GetMapping("/gen-goods-templates")
     public void genGoodsStaticTemplatePages(String spuId) {
 
-        // Spu spu=spuService.findById(spuId); // goods中包含了
+
         // 查询商品信息
         GoodsDto goodsDto = spuService.findGoodsById(spuId);
 
+        // spuService.findById(spuId); // goods中包含了
+        Spu spu = goodsDto.getSpu();
         List<Sku> skuList = goodsDto.getSkuList();
 
         // 三级分类名称 面包屑用
         List<String> categoryNames = new ArrayList<>();
-        categoryNames.add(categoryService.findById(goodsDto.getSpu().getCategory1Id()).getName());
-        categoryNames.add(categoryService.findById(goodsDto.getSpu().getCategory2Id()).getName());
-        categoryNames.add(categoryService.findById(goodsDto.getSpu().getCategory3Id()).getName());
+        categoryNames.add(categoryService.findById(spu.getCategory1Id()).getName());
+        categoryNames.add(categoryService.findById(spu.getCategory2Id()).getName());
+        categoryNames.add(categoryService.findById(spu.getCategory3Id()).getName());
 
 
         for (Sku item : skuList) {
             // 创建上下文
             Context context = new Context();
             Map<String, Object> templateDataModel = new HashMap<>();
-            templateDataModel.put("spu", goodsDto.getSpu());
+            templateDataModel.put("spu", spu);
             templateDataModel.put("sku", item);
+            // 面包屑的分类名称
             templateDataModel.put("categoryNames", categoryNames);
+            // 商品图片
             templateDataModel.put("skuImages", item.getImages().split(","));
+            // spu的参数列表
+            Map paraItems = JSON.parseObject(spu.getParaItems());
+            // sku的规格参数列表
+            Map skuItems = JSON.parseObject(item.getSpec());
+            templateDataModel.put("paraItems", paraItems);
+            templateDataModel.put("skuItems", skuItems);
+            // spu的图片
             String[] sss = goodsDto.getSpu().getImages().split(",");
             if (sss != null && sss.length > 0) {
                 templateDataModel.put("spuImages", sss);
             }
-
+            // 规格参数选择项
+            // {"规格":["88片","80片","104片","96片"]}
+            Map specItems = JSON.parseObject(spu.getSpecItems());
+            templateDataModel.put("specItems", specItems);
             // item.getCategoryId();
             context.setVariables(templateDataModel);
 
