@@ -3,12 +3,16 @@ package com.jingdong.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.jingdong.goods.service.CategoryService;
 import com.jingdong.goods.service.SkuService;
 import com.jingdong.goods.service.SpuService;
 import com.jingdong.model.goods.GoodsDto;
 import com.jingdong.pojo.goods.Sku;
 import com.jingdong.pojo.goods.Spu;
+import com.jingdong.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
@@ -67,6 +71,14 @@ public class ItemController {
         categoryNames.add(categoryService.findById(spu.getCategory2Id()).getName());
         categoryNames.add(categoryService.findById(spu.getCategory3Id()).getName());
 
+        // 生成每个规格选项组合的地址
+        Map<String, String> specUrlMap = new HashMap<>();
+        for (Sku item : skuList) {
+            if("1".equals(item.getStatus())){
+                String sortedStr=JSON.toJSONString(JSON.parseObject(item.getSpec()),SerializerFeature.MapSortField);
+                specUrlMap.put(sortedStr, item.getId() + ".html");
+            }
+        }
 
         for (Sku item : skuList) {
             // 创建上下文
@@ -78,36 +90,42 @@ public class ItemController {
             templateDataModel.put("categoryNames", categoryNames);
             // 商品图片
             templateDataModel.put("skuImages", item.getImages().split(","));
+            // spu的图片
+            String[] sss = goodsDto.getSpu().getImages().split(",");
+            if (sss != null && sss.length > 0) {
+                templateDataModel.put("spuImages", sss);
+            }
             // spu的参数列表
             Map paraItems = JSON.parseObject(spu.getParaItems());
             // sku的规格参数列表
             Map skuItems = JSON.parseObject(item.getSpec());
             templateDataModel.put("paraItems", paraItems);
             templateDataModel.put("skuItems", skuItems);
-            // spu的图片
-            String[] sss = goodsDto.getSpu().getImages().split(",");
-            if (sss != null && sss.length > 0) {
-                templateDataModel.put("spuImages", sss);
-            }
+
             // 规格参数选择项
             // {"规格":["88片","80片","104片","96片"]}
-            Map<String, List> specItems = (Map) JSON.parseObject(spu.getSpecItems());
-            Map<String, List> new_specItems = new HashMap<>();
+            Map<String, List> spuSpecItems = (Map) JSON.parseObject(spu.getSpecItems());
             // 还有一种遍历方式
-            /*for (Map.Entry entry : specItems.entrySet()) {
+            /*for (Map.Entry entry : spuSpecItems.entrySet()) {
                 List<String> vals = (List)entry.getValue();
             }*/
-            for (String key : specItems.keySet()) {
-                List<String> vals = specItems.get(key);
+
+
+            for (String key : spuSpecItems.keySet()) {
+                List<String> vals = spuSpecItems.get(key);
                 List<Map> newMap = vals.stream().map(x -> {
                     Map newRules = new HashMap();
                     newRules.put("option", x);
                     newRules.put("checked", skuItems.get(key).equals(x));
+                    Map<String,String> currentSpec=(Map)JSON.parseObject(item.getSpec());
+                    currentSpec.put(key,x);
+                    String url= specUrlMap.get(JSON.toJSONString(currentSpec,SerializerFeature.MapSortField));
+                    newRules.put("url", url);
                     return newRules;
                 }).collect(Collectors.toList());
-                new_specItems.put(key, newMap);
+                spuSpecItems.put(key, newMap); // 更新覆盖
             }
-            templateDataModel.put("specItems", new_specItems);
+            templateDataModel.put("specItems", spuSpecItems);
             // item.getCategoryId();
             context.setVariables(templateDataModel);
 
