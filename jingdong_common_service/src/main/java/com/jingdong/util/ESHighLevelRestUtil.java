@@ -22,14 +22,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ESHighLevelRestUtil {
-    static RestHighLevelClient client = new RestHighLevelClient(
-            RestClient.builder(new HttpHost("172.19.12.249", 9200, "http")));
+
+    public static RestHighLevelClient getRestHighLevelClient() {
+        RestHighLevelClient client = new RestHighLevelClient(
+                RestClient.builder(new HttpHost("172.19.12.249", 9200, "http"))
+        );
+        return client;
+    }
 
     /**
      * 验证索引是否存在
      *
-     * @param index
-     *            索引名称
+     * @param index 索引名称
      * @return
      * @throws Exception
      */
@@ -44,11 +48,9 @@ public class ESHighLevelRestUtil {
     }
 
     /**
-     *
      * @param index
      * @param indexType
-     * @param properties
-     *            结构: {name:{type:text}} {age:{type:integer}}
+     * @param properties 结构: {name:{type:text}} {age:{type:integer}}
      * @return
      * @throws Exception
      */
