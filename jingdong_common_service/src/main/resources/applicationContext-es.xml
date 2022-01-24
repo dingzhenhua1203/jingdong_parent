@@ -3,5 +3,9 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="restHighLevelClient" class="com.jingdong.util.ESHighLevelRestUtil" factory-method="getRestHighLevelClient"></bean>
+    <!--es client-->
+    <bean id="restHighLevelClient" class="com.jingdong.util.es.ESHighLevelFactory" factory-method="getRestHighLevelClient">
+        <constructor-arg name="hostName" value="127.0.0.1"></constructor-arg>
+        <constructor-arg name="port" value="9200"></constructor-arg>
+    </bean>
 </beans>

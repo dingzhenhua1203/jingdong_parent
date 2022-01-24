@@ -1,4 +1,4 @@
-package com.jingdong.util;
+package com.jingdong.util.es;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.ElasticsearchException;
@@ -17,18 +17,15 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ESHighLevelRestUtil {
 
-    public static RestHighLevelClient getRestHighLevelClient() {
-        RestHighLevelClient client = new RestHighLevelClient(
-                RestClient.builder(new HttpHost("172.19.12.249", 9200, "http"))
-        );
-        return client;
-    }
+    @Autowired
+    private RestHighLevelClient client;
 
     /**
      * 验证索引是否存在
@@ -36,7 +33,7 @@ public class ESHighLevelRestUtil {
      * @param index 索引名称
      * @return
      * @throws Exception
-     */
+     *//*
     public boolean indexExists(String index) throws Exception {
         GetIndexRequest request = new GetIndexRequest();
         request.indices(index);
@@ -47,13 +44,13 @@ public class ESHighLevelRestUtil {
         return exists;
     }
 
-    /**
+    *//**
      * @param index
      * @param indexType
      * @param properties 结构: {name:{type:text}} {age:{type:integer}}
      * @return
      * @throws Exception
-     */
+     *//*
     public boolean indexCreate(String index, String indexType,
                                Map<String, Object> properties) throws Exception {
 
@@ -70,35 +67,13 @@ public class ESHighLevelRestUtil {
         jsonMap.put(indexType, mapping);
         request.mapping(indexType, jsonMap);
 
-        CreateIndexResponse createIndexResponse = client.indices().create(
-                request);
+        CreateIndexResponse createIndexResponse = client.indices().create(request);
         boolean acknowledged = createIndexResponse.isAcknowledged();
         return acknowledged;
     }
 
-    /**
-     * 删除索引
-     *
-     * @param index
-     * @return
-     * @throws Exception
-     */
-    public boolean indexDelete(String index) throws Exception {
-        try {
-            DeleteIndexRequest request = new DeleteIndexRequest(index);
-            DeleteIndexResponse deleteIndexResponse = client.indices().delete(
-                    request);
-            return deleteIndexResponse.isAcknowledged();
-        } catch (ElasticsearchException exception) {
-            if (exception.status() == RestStatus.NOT_FOUND) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
 
-    /**
+    *//**
      * 创建更新文档
      *
      * @param index
@@ -107,7 +82,7 @@ public class ESHighLevelRestUtil {
      * @param josonStr
      * @return
      * @throws Exception
-     */
+     *//*
     public boolean documentCreate(String index, String indexType,
                                   String documentId, String josonStr) throws Exception {
         IndexRequest request = new IndexRequest(index, indexType, documentId);
@@ -132,7 +107,7 @@ public class ESHighLevelRestUtil {
         return false;
     }
 
-    /**
+    *//**
      * 创建更新索引
      *
      * @param index
@@ -141,7 +116,7 @@ public class ESHighLevelRestUtil {
      * @param map
      * @return
      * @throws Exception
-     */
+     *//*
     public boolean documentCreate(String index, String indexType,
                                   String documentId, Map<String, Object> map) throws Exception {
         IndexRequest request = new IndexRequest(index, indexType, documentId);
@@ -166,7 +141,7 @@ public class ESHighLevelRestUtil {
         return false;
     }
 
-    /**
+    *//**
      * 创建索引
      *
      * @param index
@@ -174,7 +149,7 @@ public class ESHighLevelRestUtil {
      * @param josonStr
      * @return
      * @throws Exception
-     */
+     *//*
     public String documentCreate(String index, String indexType, String josonStr)
             throws Exception {
         IndexRequest request = new IndexRequest(index, indexType);
@@ -200,7 +175,7 @@ public class ESHighLevelRestUtil {
         return null;
     }
 
-    /**
+    *//**
      * 创建索引
      *
      * @param index
@@ -208,7 +183,7 @@ public class ESHighLevelRestUtil {
      * @param map
      * @return
      * @throws Exception
-     */
+     *//*
     public String documentCreate(String index, String indexType,
                                  Map<String, Object> map) throws Exception {
         IndexRequest request = new IndexRequest(index, indexType);
@@ -252,5 +227,5 @@ public class ESHighLevelRestUtil {
             }
         }
         return false;
-    }
+    }*/
 }
