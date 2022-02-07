@@ -71,6 +71,11 @@
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
             <version>7.10.2</version>
         </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>jsr250-api</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
     <!--<properties>
         <maven.compiler.source>8</maven.compiler.source>

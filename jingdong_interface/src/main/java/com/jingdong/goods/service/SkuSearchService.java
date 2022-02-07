@@ -10,7 +10,7 @@ public interface SkuSearchService {
     /**
      * 导入sku数据到es
      */
-    public void importSkuList(List<Sku> sku);
+    public void importSkuList(List<String> firstCategoryIds);
 
     /**
      * 搜索数据
