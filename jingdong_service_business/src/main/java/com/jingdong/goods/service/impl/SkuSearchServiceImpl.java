@@ -1,13 +1,12 @@
 package com.jingdong.goods.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.jingdong.goods.dao.SkuMapper;
 import com.jingdong.goods.service.SkuSearchService;
 import com.jingdong.model.goods.GoodsESDataModel;
 import com.jingdong.pojo.goods.Sku;
-import com.jingdong.util.es.ESHighLevelFactory;
 import com.jingdong.util.es.ESHighLevelRestUtil;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
@@ -21,10 +20,6 @@ public class SkuSearchServiceImpl implements SkuSearchService {
 
     @Autowired
     private SkuMapper skuMapper;
-
-
-    @Autowired
-    private ESHighLevelRestUtil esUtil;
 
     /**
      * 按照spuid将每个spu下的sku写入es
@@ -49,7 +44,7 @@ public class SkuSearchServiceImpl implements SkuSearchService {
             skuEsModel.createDate = sku.getCreateTime();
             skuEsModel.categoryName = sku.getCategoryName();
             skuEsModel.brandName = sku.getBrandName();
-            skuEsModel.spec = sku.getSpec();
+            skuEsModel.spec = JSON.parseObject(sku.getSpec());
             skuEsModel.stocksNumber = sku.getNum();
             skuEsModel.salesNumber = sku.getSaleNum();
             skuEsModel.commentNumber = sku.getCommentNum();
@@ -58,8 +53,7 @@ public class SkuSearchServiceImpl implements SkuSearchService {
 
         // 3.写入es
         try {
-            esUtil.init2();
-            ESHighLevelRestUtil.batchIndexCreate("goodsdata", esSources);
+            Boolean flag = ESHighLevelRestUtil.batchIndexCreate("goodsdata", esSources);
         } catch (Exception ex) {
             System.out.println("ex" + ex.toString());
         }
@@ -67,6 +61,19 @@ public class SkuSearchServiceImpl implements SkuSearchService {
 
     @Override
     public Map search(Map<String, String> searchMap) {
+        try {
+            ESHighLevelRestUtil.boolQuery("goodsdata", "goodsName", "手机");
+        } catch (Exception ex) {
+            System.out.println("ex" + ex.toString());
+        }
         return null;
+    }
+
+    private void testES() {
+        try {
+            ESHighLevelRestUtil.boolQuery("goodsdata", "goodsName", "手机");
+        } catch (Exception ex) {
+            System.out.println("ex" + ex.toString());
+        }
     }
 }

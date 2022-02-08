@@ -16,7 +16,7 @@ public class GoodsESDataModel implements Serializable {
     public Date createDate;
     public String categoryName;
     public String brandName;
-    public String spec;
+    public Object spec;
     public Integer stocksNumber;
     public Integer salesNumber;
     public Integer commentNumber;

@@ -1,35 +1,23 @@
 package com.jingdong.util.es;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.http.HttpHost;
-import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
-import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.delete.DeleteRequest;
-import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
-import org.elasticsearch.action.support.replication.ReplicationResponse;
-import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.CountRequest;
 import org.elasticsearch.client.core.CountResponse;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -40,7 +28,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,27 +35,23 @@ import java.util.Map;
 public class ESHighLevelRestUtil {
 
     /**
-     * 静态属性无法注入，需要配合@PostConstruct
+     * 静态属性无法注入，不能用static修饰，spring只能注入实例对象。配合@PostConstruct
      */
     @Autowired
-    private static RestHighLevelClient client;
-
-    @Autowired
-    private  RestHighLevelClient esClient;
+    private  RestHighLevelClient client;
 
     private static ESHighLevelRestUtil esHighLevelRestUtil;
 
-
-    // 引入javax.annotation；执行顺序 Constructor(构造方法) -> @Autowired(依赖注入) -> @PostConstruct(注释的方法)
+    /**
+     * 引入javax.annotation；执行顺序 Constructor(构造方法) -> @Autowired(依赖注入) -> @PostConstruct(注释的方法)
+     * 注：@PostConstruct修饰的方法会在服务器加载Servlet的时候运行，并且只会被服务器执行一次。PostConstruct在构造函数之后执行,init()方法之前执行。
+     */
     @PostConstruct
     public void init() {
         esHighLevelRestUtil = this;
         esHighLevelRestUtil.client = this.client;
     }
 
-    public void init2() {
-        esClient.toString();
-    }
 
     public static String indexCreate(String index, String jsonData) throws Exception {
 
@@ -82,7 +65,7 @@ public class ESHighLevelRestUtil {
         IndexRequest indexRequest = new IndexRequest(index).id("");
         indexRequest.source(jsonData, XContentType.JSON);
         indexRequest.timeout("1s");
-        IndexResponse indexResponse = client.index(indexRequest,
+        IndexResponse indexResponse = esHighLevelRestUtil.client.index(indexRequest,
                 RequestOptions.DEFAULT);
         System.out.println(indexResponse.getResult().toString());
         return indexResponse.getResult().toString();
@@ -110,7 +93,7 @@ public class ESHighLevelRestUtil {
         bulkRequest.timeout("2m");
         for (int i = 0; i < contents.size(); i++) {
             bulkRequest.add(
-                    new IndexRequest(index)//索引
+                    new IndexRequest(index)
                             .source(JSON.toJSONString(contents.get(i)), XContentType.JSON)
             );
         }
@@ -121,7 +104,7 @@ public class ESHighLevelRestUtil {
 
     public static boolean indexDelete(String index) throws IOException {
         DeleteIndexRequest deleteRequest = new DeleteIndexRequest(index);
-        AcknowledgedResponse resp = client.indices().delete(deleteRequest, RequestOptions.DEFAULT);
+        AcknowledgedResponse resp = esHighLevelRestUtil.client.indices().delete(deleteRequest, RequestOptions.DEFAULT);
         return resp.isAcknowledged();
     }
 
@@ -195,19 +178,18 @@ public class ESHighLevelRestUtil {
          * QueryBuilders. matchQuery(“key”, Obj) 单个匹配,match查询，会将搜索词分词，再与目标查询字段进行匹配，若分词中的任意一个词与目标字段匹配上，则可查询到。
          * QueryBuilders. multiMatchQuery(“text”, “field1”, “field2”…); 匹配多个字段, field有通配符忒行
          */
-        boolQueryBuilder.must(QueryBuilders.matchQuery("scompCode", "G0000001"));
+        boolQueryBuilder.must(QueryBuilders.matchQuery(key, value));
         // 模糊查询
-        boolQueryBuilder.filter(QueryBuilders.wildcardQuery("itemDesc", "*手机*"));
+        // boolQueryBuilder.filter(QueryBuilders.wildcardQuery("itemDesc", "*手机*"));
         // 范围查询 from:相当于闭区间; gt:相当于开区间(>) gte:相当于闭区间 (>=) lt:开区间(<) lte:闭区间 (<=)
-        boolQueryBuilder.filter(QueryBuilders.rangeQuery("itemPrice").from(4500).to(8899));
-
+        // boolQueryBuilder.filter(QueryBuilders.rangeQuery("itemPrice").from(4500).to(8899));
         // boolQueryBuilder.filter(QueryBuilders.termQuery("mobile", ""));
         // boolQueryBuilder.filter(QueryBuilders.rangeQuery("num").gte(1));
         sourceBuilder.query(boolQueryBuilder);
         searchRequest.source(sourceBuilder);
-        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+        SearchResponse searchResponse = esHighLevelRestUtil.client.search(searchRequest, RequestOptions.DEFAULT);
         searchResponse.getHits().forEach(res -> {
-            // log.info(res.toString());
+            System.out.println(res.toString());
         });
     }
 
