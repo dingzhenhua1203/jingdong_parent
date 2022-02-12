@@ -72,7 +72,7 @@ public class SkuSearchServiceImpl implements SkuSearchService {
 
             ESQueryBuilderUtil esQueryBuilderUtil = new ESQueryBuilderUtil();
             SearchSourceBuilder sourceBuilder;
-            sourceBuilder = esQueryBuilderUtil..matchQuery("goodsName", searchMap.getOrDefault("keywords", ""))
+            sourceBuilder = esQueryBuilderUtil.matchQuery("goodsName", searchMap.getOrDefault("keywords", ""))
                     .termQuery("categoryName", searchMap.getOrDefault("categoryName", ""))
                     .termQuery("brandName", searchMap.getOrDefault("brandName", ""))
                     .sorting(sortKey, sortOrder)
