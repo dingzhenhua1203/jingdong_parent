@@ -23,10 +23,10 @@
 
         function pageSearch(key, value) {
             debugger
-            if (window.location.href.indexOf("pageIndex")) {
+            if (window.location.href.indexOf("pageIndex") > -1) {
                 window.location.href = window.location.href.replace(key, value);
             } else {
-                window.location.href = window.location.href + `${value}`;
+                window.location.href = window.location.href + value;
             }
         }
     </script>
@@ -611,7 +611,8 @@
                     <a href="#">筛选条件：</a>
                 </li>
             </ul>
-            <ul class="fl sui-tag" th:if="${result.chooses===null ||result.chooses.size===0}" th:each="choosed:${result.chooses}">
+            <ul class="fl sui-tag"
+                th:each="choosed:${result.chooses}">
                 <li class="with-x">[[${choosed.key}]]
                     <a href="javascript:void(0);" th:onclick="removeUrlStr([[${choosed.value}]])"><i>×</i></a></li>
             </ul>
@@ -824,7 +825,7 @@
                             <div class="attr">
                                 <a target="_blank" href="item.html"
                                    th:title="${goods.goodsName}"
-                                th:utext="${goods.goodsName}"
+                                   th:utext="${goods.goodsName}"
                                 ></a>
                                 <a target="_blank" href="item.html"
                                    th:title="${goods.goodsName}">[(${goods.goodsName})]</a>
