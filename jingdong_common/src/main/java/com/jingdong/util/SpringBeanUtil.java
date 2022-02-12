@@ -1,31 +1,29 @@
 package com.jingdong.util;
 
-
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
- * 同SpringBeanUtil
- * 获取bean对象的工具类, 解决多线程中bean的使用问题
- * 在多线程处理问题时，无法通过@Autowired注入bean，报空指针异常，
- * 在线程中为了线程安全，是防注入的，如果要用到这个类，只能从bean工厂里拿个实例
- * 使用案例：
- *  private SystemService systemService;
- *  this.das = ApplicationContextProvider.getBean(SystemService.class);
+ * 同ApplicationContextProvider
+ * 获取spring中的bean的工具类,比如spring默认是单例的， 为了获取多例对象，请求接口每一层都要改为多例，这样就不太方面，
+ * 那么可以选择不使用@Autowried注入 改用SpringBeanUtil.getBean
+ * eg:Order order = SpringBeanUtil.getBean(Order.class);
  */
 @Component
-public class ApplicationContextProvider implements ApplicationContextAware {
+public class SpringBeanUtil implements ApplicationContextAware {
+
     /**
      * 上下文对象实例
      */
     private static ApplicationContext applicationContext;
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
+
     /**
      * 获取applicationContext
      *
@@ -34,6 +32,7 @@ public class ApplicationContextProvider implements ApplicationContextAware {
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
+
     /**
      * 通过name获取 Bean.
      *
@@ -43,6 +42,7 @@ public class ApplicationContextProvider implements ApplicationContextAware {
     public static Object getBean(String name) {
         return getApplicationContext().getBean(name);
     }
+
     /**
      * 通过class获取Bean.
      *
@@ -53,6 +53,7 @@ public class ApplicationContextProvider implements ApplicationContextAware {
     public static <T> T getBean(Class<T> clazz) {
         return getApplicationContext().getBean(clazz);
     }
+
     /**
      * 通过name,以及Clazz返回指定的Bean
      *

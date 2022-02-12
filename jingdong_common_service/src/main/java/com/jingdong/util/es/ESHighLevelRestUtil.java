@@ -13,6 +13,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.CountRequest;
 import org.elasticsearch.client.core.CountResponse;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -20,6 +21,10 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
@@ -28,8 +33,11 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class ESHighLevelRestUtil {
@@ -38,7 +46,7 @@ public class ESHighLevelRestUtil {
      * 静态属性无法注入，不能用static修饰，spring只能注入实例对象。配合@PostConstruct
      */
     @Autowired
-    private  RestHighLevelClient client;
+    private RestHighLevelClient client;
 
     private static ESHighLevelRestUtil esHighLevelRestUtil;
 
@@ -83,6 +91,7 @@ public class ESHighLevelRestUtil {
 
     /**
      * 批量插入
+     *
      * @param index
      * @param contents
      * @return
@@ -168,7 +177,9 @@ public class ESHighLevelRestUtil {
      *
      * @throws IOException
      */
-    public static void boolQuery(String index, String key, String value) throws IOException {
+    public static Map boolQuery(String index, String key, String value, String aggrkey) throws IOException {
+        Map result = new HashMap();
+
         SearchRequest searchRequest = new SearchRequest(index);
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -179,6 +190,7 @@ public class ESHighLevelRestUtil {
          * QueryBuilders. multiMatchQuery(“text”, “field1”, “field2”…); 匹配多个字段, field有通配符忒行
          */
         boolQueryBuilder.must(QueryBuilders.matchQuery(key, value));
+
         // 模糊查询
         // boolQueryBuilder.filter(QueryBuilders.wildcardQuery("itemDesc", "*手机*"));
         // 范围查询 from:相当于闭区间; gt:相当于开区间(>) gte:相当于闭区间 (>=) lt:开区间(<) lte:闭区间 (<=)
@@ -187,11 +199,83 @@ public class ESHighLevelRestUtil {
         // boolQueryBuilder.filter(QueryBuilders.rangeQuery("num").gte(1));
         sourceBuilder.query(boolQueryBuilder);
         searchRequest.source(sourceBuilder);
+
+        // 聚合查询 搜索中的商品分类
+        if (aggrkey != null) {
+            TermsAggregationBuilder aggrBuilder = AggregationBuilders.terms(aggrkey).field(aggrkey);
+            sourceBuilder.aggregation(aggrBuilder);
+        }
+
         SearchResponse searchResponse = esHighLevelRestUtil.client.search(searchRequest, RequestOptions.DEFAULT);
-        searchResponse.getHits().forEach(res -> {
-            System.out.println(res.toString());
+        SearchHits hits = searchResponse.getHits();
+        long totals = hits.getTotalHits().value;
+        List<Map<String, Object>> hitList = new ArrayList<>();
+        hits.forEach(res -> {
+            System.out.println(res.getSourceAsString());
+            hitList.add((res.getSourceAsMap()));
         });
+
+        result.put("totals", totals);
+        result.put("rows", hitList);
+
+        // 获取聚合查询结果
+        Terms terms = (Terms) searchResponse.getAggregations().getAsMap().get(aggrkey);
+        List<? extends Terms.Bucket> buckets = terms.getBuckets();
+        List<String> categoryList = buckets.stream().map(x -> x.getKeyAsString()).collect(Collectors.toList());
+        result.put("categoryList", categoryList);
+        return result;
     }
+
+    /**
+     * 模糊查询boolQuery
+     *
+     * @throws IOException
+     */
+    public static Map boolQuery(String index, SearchSourceBuilder sourceBuilder, String aggrekey) throws IOException {
+        Map result = new HashMap();
+
+        SearchRequest searchRequest = new SearchRequest(index);
+
+        // 聚合查询 搜索中的商品分类
+        if (aggrekey != null) {
+            TermsAggregationBuilder aggrBuilder = AggregationBuilders.terms(aggrekey).field(aggrekey);
+            sourceBuilder.aggregation(aggrBuilder);
+        }
+
+        searchRequest.source(sourceBuilder);
+
+        SearchResponse searchResponse = esHighLevelRestUtil.client.search(searchRequest, RequestOptions.DEFAULT);
+        SearchHits hits = searchResponse.getHits();
+        long totals = hits.getTotalHits().value;
+        List<Map<String, Object>> hitList = new ArrayList<>();
+        hits.forEach(res -> {
+            System.out.println(res.getSourceAsString());
+            Map<String, Object> item = res.getSourceAsMap();
+
+            // 处理要高亮的内容，替换到item中
+            Map<String, HighlightField> highlightFields = res.getHighlightFields();
+            highlightFields.forEach((key, value) -> {
+                if (item.containsKey(key)) {
+                    Text[] fragments = value.fragments();
+                    item.put(key, fragments[0].toString());
+                }
+            });
+            hitList.add((res.getSourceAsMap()));
+        });
+
+        result.put("totals", totals);
+        result.put("rows", hitList);
+
+        // 获取聚合查询结果
+        if (aggrekey != null) {
+            Terms terms = (Terms) searchResponse.getAggregations().getAsMap().get(aggrekey);
+            List<? extends Terms.Bucket> buckets = terms.getBuckets();
+            List<String> categoryList = buckets.stream().map(x -> x.getKeyAsString()).collect(Collectors.toList());
+            result.put("categoryList", categoryList);
+        }
+        return result;
+    }
+
 
     void countQuery(String index, String key, String value) {
         BoolQueryBuilder boolBuilder = QueryBuilders.boolQuery();
