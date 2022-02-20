@@ -1,5 +1,8 @@
 package com.jingdong.order.service;
 
+import com.jingdong.model.base.ResultMsg;
+import com.jingdong.model.order.CartModel;
+
 import java.util.*;
 /**
  * 购物车服务
@@ -7,29 +10,29 @@ import java.util.*;
 public interface CartService {
 
     /**
-     * 从redis中提取购物车
-     * @param username
-     * @return
-     */
-    public List<Map<String,Object>> findCartList(String username);
-
-
-    /**
-     * 添加商品到购物车
-     * @param username
+     * 添加购物车
+     * @param userId
      * @param skuId
      * @param num
+     * @return
      */
-    public void addItem(String username, String  skuId, Integer num);
+    public ResultMsg<String> addCart(String userId,String skuId,Integer num);
+
+    /**
+     * 从redis中提取购物车
+     * @param userid
+     * @return
+     */
+    public List<CartModel> queryMyCart(String userid);
 
 
     /**
      * 更新选中状态
-     * @param username
+     * @param userId
      * @param skuId
      * @param checked
      */
-    public boolean updateChecked(String username, String skuId,boolean checked);
+    public Boolean updateChecked(String userId, String skuId,boolean checked);
 
 
     /**
@@ -37,20 +40,13 @@ public interface CartService {
      * @param
      * @return
      */
-    public int preferential(String username);
-
-    /**
-     * 获取最新的购物车列表
-     * @param username 用户名
-     * @return
-     */
-    public List<Map<String, Object>> findNewOrderItemList(String username);
+    public Integer preferential(String userId);
 
 
     /**
      * 删除选中的购物车
-     * @param username
+     * @param userId
      */
-    public void deleteCheckedCart(String username);
+    public void delCart(String userId,String skuId);
 
 }
