@@ -9,25 +9,17 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>jingdong_common</module>
-        <!--<module>jingdong_common_cas</module>-->
         <module>jingdong_common_service</module>
         <module>jingdong_common_web</module>
         <module>jingdong_interface</module>
         <module>jingdong_pojo</module>
         <module>jingdong_service_business</module>
-        <module>jingdong_service_config</module>
-<!--        <module>jingdong_service_pay</module>
-        <module>jingdong_service_seckill</module>
-        <module>jingdong_service_sms</module>-->
         <module>jingdong_service_system</module>
         <module>jingdong_service_user</module>
         <module>jingdong_web_manager</module>
         <module>jingdong_web_protal</module>
         <module>jingdong_common_cas</module>
         <module>jingdong_web_center</module>
-        <!--<module>jingdong_web_portal</module>
-        <module>jingdong_web_seckill</module>
-        <module>jingdong_web_user</module>-->
     </modules>
 
     <packaging>pom</packaging>
