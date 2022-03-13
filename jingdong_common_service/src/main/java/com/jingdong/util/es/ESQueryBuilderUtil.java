@@ -84,16 +84,16 @@ public class ESQueryBuilderUtil {
         // boolQueryBuilder.filter(QueryBuilders.rangeQuery("num").gte(1));
         switch (type) {
             case gt:
-                boolQueryBuilder.filter(QueryBuilders.rangeQuery("num").gt(1));
+                boolQueryBuilder.filter(QueryBuilders.rangeQuery(key).gt(value));
                 break;
             case gte:
-                boolQueryBuilder.filter(QueryBuilders.rangeQuery("num").gte(1));
+                boolQueryBuilder.filter(QueryBuilders.rangeQuery(key).gte(value));
                 break;
             case lt:
-                boolQueryBuilder.filter(QueryBuilders.rangeQuery("num").lt(1));
+                boolQueryBuilder.filter(QueryBuilders.rangeQuery(key).lt(value));
                 break;
             case lte:
-                boolQueryBuilder.filter(QueryBuilders.rangeQuery("num").lte(1));
+                boolQueryBuilder.filter(QueryBuilders.rangeQuery(key).lte(value));
                 break;
         }
 
